@@ -1,7 +1,7 @@
 
 // app-server.js
 var express = require('express');
-var bodyParser = require('body-parser');
+var bodyParser = require('body-parser');  
 var stripe = require("stripe")(process.env.STRIPE_SECRET || "sk_test_LFGQnyARiQMR5pAm01cMhsfB");
 var app = express();
 app.set('port', process.env.PORT || 3000)
