@@ -1,0 +1,62 @@
+<div class="jumbotron" ng-init="vm.init()">
+    <form class="custom" onsubmit="return false" method="post" action="/product/dark-coffee-table">
+        <div class="row" id="product">
+            <div id="product-page">
+                <div class="row content">
+
+                    <div class="col-md-6">
+                        <ul class="col-md-12 thumblist">
+                            <li>
+                                <img ng-src="{{vm.product.metadata.images.image_2.url}}" alt="{{vm.product.title}}">
+                            </li>
+                            <li>
+                                <img ng-src="{{vm.product.metadata.images.image_3.url}}" alt="{{vm.product.title}}">
+                            </li>
+                        </ul>
+
+
+                        <div class="col-md-12" id="main-img">
+                            <img id="big-thumb" ng-src="{{vm.product.metadata.images.image_1.url}}" alt="{{vm.product.title}}">
+                        </div>
+                    </div>
+
+                    <div id="product-detail" class="col-md-6">
+
+                        <div class="col-md-12">
+                            <h2>{{vm.product.title}}</h2>
+
+                            <h3>${{vm.product.metadata.price}}</h3>
+
+                            <p></p><p ng-bind-html="vm.product.content"></p><p></p>
+
+
+
+
+
+                            <h3>Product Extras</h3>
+                            <div class="clearfix">
+                                <div class="extra">
+                                    <label class="title" for="extra-0">cups ($12.00)</label>
+                                    <input type="checkbox" id="extra-0" name="extras[1]" data-ajax-handler="shop:product" data-ajax-update="#product-page=shop-product">
+                                </div>
+                            </div>
+
+
+                            <input type="hidden" name="productId" value="7">
+                            <div class="add-cart-holder form-group">
+                                <div class="quantity-selector">
+                                    <label class="title">Quantity</label>
+                                    <input class="form-control quantity" type="text" value="1" name="quantity">
+                                </div>
+                            </div>
+
+                            <a class="btn btn-default btn-add-cart" data-ajax-update="#normal-carts=shop-minicart-totals, #product-page=shop-product, #mini-cart=shop-minicart" data-ajax-handler="shop:onAddToCart">Add to Cart </a>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

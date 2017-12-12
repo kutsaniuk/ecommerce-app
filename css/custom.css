@@ -1,0 +1,119 @@
+/* Card Form */
+
+.ls-card-form {
+    width: 100%;
+}
+.card-form-expiry-outer label {
+    display: inherit;
+}
+.card-table {
+    font-size: 15px;
+    background-color: #DADFE1;
+}
+.card-table th {
+    padding: 10px;
+    color: #363636;
+}
+.card-table a,
+.card-table a:hover,
+.card-table a:focus {
+    text-decoration: underline;
+}
+.card-form-close {
+    display: none;
+}
+.card-form-open {
+    display: block;
+}
+.ls-card-form .submit-button,
+.ls-card-form .delete-button {
+    border-radius:0px;
+      border:1px solid rgba(0,0,0,0.4);
+      background:none;
+      color:black;
+      margin-top:10px;
+      font-size:1.2em;
+      font-weight:400;
+      letter-spacing:0.1em;
+      font-size:1em;
+}
+.ls-card-form .submit-button:hover,
+.ls-card-form .delete-button:hover {
+    background:#aaa;
+    color:#333;
+}
+.ls-card-form .card-form-input {
+    background-color: #FFF;
+    border: 1px solid #DDD;
+    font-family: inherit;
+    box-shadow: none;
+    border-radius: 0;
+}
+.ls-card-form .card-form-input:focus {
+    border-color: black;
+    background-color: inherit;
+}
+.ls-card-form .card-form-input::-webkit-input-placeholder {
+    font-family: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    color: #D4D4D4;
+}
+.ls-card-form .card-form-input:-moz-placeholder {
+    /* Firefox 18- */
+    
+    font-family: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    color: #D4D4D4;
+}
+.ls-card-form .card-form-input::-moz-placeholder {
+    /* Firefox 19+ */
+    
+    font-family: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    color: #D4D4D4;
+}
+.ls-card-form .card-form-input:-ms-input-placeholder {
+    font-family: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    color: #D4D4D4;
+}
+.ls-card-form .error-highlight,
+.ls-card-form .error-highlight:focus {
+    border-color: #D34246 !important;
+}
+
+.ls-card-form .valid-highlight,
+.ls-card-form .valid-highlight:focus {
+    border-color: #3DE000 !important;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #000000;
+}
+
+.navbar {
+    background: white;
+}
+
+#intro-image {
+    background: url(/resources/tanto/img/bg.jpg?1460327300) no-repeat top center;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+#layer {
+    background: #85d7de; /* Old browsers */
+    background: -moz-linear-gradient(-45deg, #85d7de 0%, #e0a979 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right bottom, color-stop(0%, #85d7de), color-stop(100%, #e0a979)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(-45deg, #85d7de 0%, #e0a979 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(-45deg, #85d7de 0%, #e0a979 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(-45deg, #85d7de 0%, #e0a979 100%); /* IE10+ */
+    background: linear-gradient(135deg, #85d7de 0%, #e0a979 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#85d7de', endColorstr='#e0a979', GradientType=1);
+}

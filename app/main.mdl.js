@@ -18,7 +18,11 @@
             'hl.sticky',
             'stripe.checkout',
  
-            'watch',
+            'home',
+            'shop',
+            'product',
+            'checkout',
+
             'cart',
             'admin',
             
@@ -55,7 +59,7 @@
                 case 'ROLE_ADMIN':
                     state = 'admin.watches';
                     break;
-                default : state = 'main.watch';
+                default : state = 'main.home';
             }
 
             if (state) $state.go(state);
