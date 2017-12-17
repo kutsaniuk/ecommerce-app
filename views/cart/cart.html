@@ -1,34 +1,54 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="row">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <tr>
-                        <th>#</th>
-                        <th>Image</th>
-                        <th>Model</th>
-                        <th>Brand</th>
-                        <th>Price</th>
-                        <th></th>
-                    </tr>
-                    <tr ng-repeat="watch in cart.watches">
-                        <td>{{$index + 1}}</td>
-                        <td><img ng-src="{{watch.metadata.images.image_1.url}}" width="100"></td>
-                        <td><a ui-sref="main.watch.profile({slug: watch.slug})">{{watch.title}}</a></td>
-                        <td>{{watch.metadata.brand}}</td>
-                        <td><i class="fa fa-dollar"></i> {{watch.metadata.price}}</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" ng-click="cart.removeFromCart(watch._id)"><i class="fa fa-remove"></i></button>
-                        </td>
-                    </tr>
-                </table>
+<div class="row content" id="cartt" ng-init="cart.getCart()">
+    <form class="custom" method="post">
+        <div id="cart-content">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <h1>SHOPPING CART</h1>
+                    </div>
+                </div>
+                <div class="col-md-12">
+
+                    <div class="items-holder">
+
+                        <div class="row" id="cart-row" ng-repeat="product in cart.products">
+
+                            <div class="col-sm-2" id="cart-img">
+                                <img alt="{{product.title}}" ng-src="{{product.metadata.images.image_1.url}}">
+                            </div>
+                            <div class="row" id="align-middle">
+                                <div class="col-sm-4">
+                                    <a ui-sref="main.product({id: product._id})">{{product.title}}</a>
+                                </div>
+                                <div class="col-sm-2">
+
+                                </div>
+                                <div class="col-sm-3" id="item-middle">
+                                    <p class="col-sm-9">${{product.metadata.price}}</p>
+
+                                    <a class="col-sm-3" id="item-close" ng-click="cart.removeFromCart(product._id)"><i
+                                            class="fa fa-times" id="remove-cart-item"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+                <div class="row col-md-3">
+                    <p>Order Summary</p>
+                    <ul class="price-list list-group">
+                        <li class="list-group-item important">Total: ${{cart.totalPrice}}</li>
+                    </ul>
+                    <a class="btn btn-default col-xs-12 btn-lg solid" ng-click="cart.getCart()">Update Cart <i
+                            class="fa fa-refresh"></i></a>
+                    <a class="col-xs-12 btn btn-important solid btn-lg" ui-sref="main.checkout">Checkout</a>
+                </div>
+
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <a class="btn btn-primary btn-lg" ui-sref="main.cart.checkout" ng-class="{'disabled': !cart.watches.length}">Checkout</a>
-            </div>
-            <div class="col-md-6 text-right"><h3>Total: <b><i class="fa fa-dollar"></i> {{cart.totalPrice}}</b></h3></div>
-        </div>
-    </div>
+    </form>
 </div>

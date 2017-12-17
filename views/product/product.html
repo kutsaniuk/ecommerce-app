@@ -6,10 +6,10 @@
 
                     <div class="col-md-6">
                         <ul class="col-md-12 thumblist">
-                            <li>
+                            <li ng-if="vm.product.metafields[1].children[1].value">
                                 <img ng-src="{{vm.product.metadata.images.image_2.url}}" alt="{{vm.product.title}}">
                             </li>
-                            <li>
+                            <li ng-if="vm.product.metafields[1].children[2].value">
                                 <img ng-src="{{vm.product.metadata.images.image_3.url}}" alt="{{vm.product.title}}">
                             </li>
                         </ul>
@@ -29,30 +29,10 @@
 
                             <p></p><p ng-bind-html="vm.product.content"></p><p></p>
 
-
-
-
-
                             <h3>Product Extras</h3>
-                            <div class="clearfix">
-                                <div class="extra">
-                                    <label class="title" for="extra-0">cups ($12.00)</label>
-                                    <input type="checkbox" id="extra-0" name="extras[1]" data-ajax-handler="shop:product" data-ajax-update="#product-page=shop-product">
-                                </div>
-                            </div>
 
-
-                            <input type="hidden" name="productId" value="7">
-                            <div class="add-cart-holder form-group">
-                                <div class="quantity-selector">
-                                    <label class="title">Quantity</label>
-                                    <input class="form-control quantity" type="text" value="1" name="quantity">
-                                </div>
-                            </div>
-
-                            <a class="btn btn-default btn-add-cart" data-ajax-update="#normal-carts=shop-minicart-totals, #product-page=shop-product, #mini-cart=shop-minicart" data-ajax-handler="shop:onAddToCart">Add to Cart </a>
+                            <a class="btn btn-default btn-add-cart" ng-click="cart.addToCart(vm.product)">Add to Cart </a>
                         </div>
-
 
                     </div>
                 </div>

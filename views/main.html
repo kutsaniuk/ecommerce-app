@@ -28,12 +28,33 @@
                     <li>
                         <a href="//tanto.lemonstand.com/login">LOGIN</a>
                     </li>
-                    <li id="normal-cart">
+                    <li id="normal-cart" ng-init="cart.getCart()">
                         <a id="normal-carts" href="//tanto.lemonstand.com/cart" data-toggle="dropdown"><span
-                                class="hidden-xs" id="navbar-totals">CART ( 0 )</span></a>
-                        <div id="mini-cart" class="dropdown-menu">
+                                class="hidden-xs" id="navbar-totals">CART ( {{cart.products.length}} )</span></a>
+                        <div id="mini-cart" class="dropdown-menu" ng-show="!cart.products.length">
                             <h6>No items in cart.</h6>
+                        </div>
 
+                        <div id="mini-cart" class="dropdown-menu" ng-show="cart.products.length">
+                            <ul class="cart-items list-unstyled hidden-xs">
+                                <li class="row cart-item" ng-repeat="product in cart.products">
+                                    <div class="product-thumb col-xs-4">
+                                        <img class="img-responsive" alt="{{product.title}}" ng-src="{{product.metadata.images.image_1.url}}">
+                                    </div>
+                                    <div class="product-info col-xs-8">
+                                        <h6 class="product-title">{{product.title}}</h6>
+                                        <div class="price">
+                                            <span>${{product.metadata.price}}</span>
+                                        </div>
+                                        <a class="remove-item" href="" ng-click="cart.removeFromCart(product._id)"><i class="fa fa-times"></i></a>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="mini-cart-totals">
+                                <h4 class="subtotal">Subtotal: ${{cart.totalPrice}}</h4>
+                                <a class="btn col-xs-12" ui-sref="main.cart">View Cart</a>
+                                <a class="col-xs-12 btn btn-important" ui-sref="main.checkout">Checkout</a>
+                            </div>
                         </div>
                     </li>
                     <li id="normal-cart"><a ui-sref="main.checkout">CHECKOUT</a></li>

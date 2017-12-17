@@ -309,7 +309,7 @@
         .module('main')
         .controller('CartCtrl', CartCtrl);
 
-    function CartCtrl(CartService, WatchService, $cookies, $http, Notification, STRIPE_KEY, $log, $state, StripeCheckout) {
+    function CartCtrl(CartService, ProductService, $cookies, $http, Notification, STRIPE_KEY, $log, $state, StripeCheckout) {
         var vm = this;
 
         vm.addToCart = addToCart;
@@ -321,7 +321,7 @@
 
         vm.cart = {};
         vm.cart.order = {};
-        vm.watches = [];
+        vm.products = [];
         vm.totalPrice = 0;
         vm.orderForm = null;
 
@@ -418,7 +418,7 @@
         function getCart() {
             function success(response) {
                 vm.cart = response;
-                getWatches();
+                getProducts();
 
                 $log.info(response);
             }
@@ -433,20 +433,22 @@
 
         }
 
-        function getWatches() {
+        function getProducts() {
             function success(response) {
                 $log.info(response);
 
-                vm.watches = [];
+                vm.products = [];
                 vm.totalPrice = 0;
 
                 for (var _id in vm.cart)
                     response.data.objects.forEach(function (item) {
                         if (item._id === _id) {
-                            vm.watches.push(item);
-                            vm.totalPrice += item.metadata.price;
+                            vm.products.push(item);
+                            vm.totalPrice += parseInt(item.metadata.price);
                         }
                     });
+
+                console.log('getProducts', vm.products);
 
             }
 
@@ -454,8 +456,8 @@
                 $log.error(response);
             }
 
-            WatchService
-                .getWatches({})
+            ProductService
+                .getProducts({})
                 .then(success, failed);
 
         }
@@ -1327,36 +1329,6 @@ angular.module("config", [])
 })();
  
 (function () {
-    'use strict';
-    
-    angular
-        .module('cart.checkout', [])
-        .config(config); 
-
-    config.$inject = ['$stateProvider', 'StripeCheckoutProvider'];
-    function config($stateProvider, StripeCheckoutProvider) {
- 
-        $stateProvider
-            .state('main.cart.checkout', {
-                url: '/checkout',
-                views: {
-                    '@main': {
-                        templateUrl: '../views/cart/cart.checkout.html'
-                    }
-                }
-            })
-            .state('main.cart.thankYou', {
-                url: '/thank-you',
-                views: {
-                    '@main': {
-                        templateUrl: '../views/cart/cart.thank-you.html'
-                    }
-                }
-            });
-    }
-})();
- 
-(function () {
     'use strict'; 
 
     angular
@@ -1536,6 +1508,36 @@ angular.module("config", [])
             }
         });
 })();  
+(function () {
+    'use strict';
+    
+    angular
+        .module('cart.checkout', [])
+        .config(config); 
+
+    config.$inject = ['$stateProvider', 'StripeCheckoutProvider'];
+    function config($stateProvider, StripeCheckoutProvider) {
+ 
+        $stateProvider
+            .state('main.cart.checkout', {
+                url: '/checkout',
+                views: {
+                    '@main': {
+                        templateUrl: '../views/cart/cart.checkout.html'
+                    }
+                }
+            })
+            .state('main.cart.thankYou', {
+                url: '/thank-you',
+                views: {
+                    '@main': {
+                        templateUrl: '../views/cart/cart.thank-you.html'
+                    }
+                }
+            });
+    }
+})();
+ 
 (function () {
     'use strict'; 
 
