@@ -3,9 +3,9 @@
 
     angular
         .module('main')
-        .controller('AdminWatchesEdit', AdminWatchesEdit);
+        .controller('AdminProductsEdit', AdminProductsEdit);
 
-    function AdminWatchesEdit($state, WatchService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
+    function AdminProductsEdit($state, WatchService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
         var vm = this;
 
         vm.updateWatch = updateWatch;

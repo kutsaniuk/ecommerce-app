@@ -4,7 +4,7 @@
         <h1>TANTO FURNITURE</h1>
         <p>Our aim is to give homes and offices minimal and functional furniture. We spend more than half of our day
             indoors. </p><br><br>
-        <a href="//tanto.lemonstand.com/shop" class="btn btn-important">Shop our Collection</a>
+        <a ui-sref="main.shop" class="btn btn-important">Shop our Collection</a>
 
     </div>
 </div>
@@ -12,51 +12,14 @@
 <div class="row" id="feature">
     <h1>FEATURE ITEMS</h1>
     <p>The best picks by our designers</p>
-    <div class="col-md-3 feature-item">
-        <a href="/product/minimal-book-shelf">
-            <img src="//dd6vif294zh3b.cloudfront.net/store-tanto-543852ae9b0a6/uploaded/thumbnails/3a_350x350-jpg-crop.png?1414097465"
-                 alt="Minimal Book Shelf">
+    <div class="col-md-3 feature-item" ng-repeat="product in cart.products">
+        <a ui-sref="main.product({id: product.slug})">
+            <img alt="{{product.title}}" ng-src="{{product.metadata.images.image_1.url}}">
+
             <div>
-                <h5>Minimal Book Shelf</h5>
+                <h5>{{product.title}}</h5>
 
-                <p>$50.00</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="col-md-3 feature-item">
-        <a href="/product/dark-coffee-table">
-            <img src="//dd6vif294zh3b.cloudfront.net/store-tanto-543852ae9b0a6/uploaded/thumbnails/4a_350x350-jpg-crop.png?1414097668"
-                 alt="Dark Coffee Table">
-            <div>
-                <h5>Dark Coffee Table</h5>
-
-                <p>$90.00</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="col-md-3 feature-item">
-        <a href="/product/layered-desk">
-            <img src="//dd6vif294zh3b.cloudfront.net/store-tanto-543852ae9b0a6/uploaded/thumbnails/7a_350x350-jpg-crop.png?1414097668"
-                 alt="Layered Desk">
-            <div>
-                <h5>Layered Desk</h5>
-                <small class="previous-price">$125.00</small>
-
-                <p>$110.00</p>
-            </div>
-        </a>
-    </div>
-
-    <div class="col-md-3 feature-item">
-        <a href="/product/triangle-desk">
-            <img src="//dd6vif294zh3b.cloudfront.net/store-tanto-543852ae9b0a6/uploaded/thumbnails/5a_350x350-jpg-crop.png?1414097668"
-                 alt="Triangle Desk">
-            <div>
-                <h5>Triangle Desk</h5>
-
-                <p>$50.00</p>
+                <p>${{product.metadata.price}}</p>
             </div>
         </a>
     </div>

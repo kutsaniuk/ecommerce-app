@@ -25,7 +25,8 @@
 
                         crAcl.setRole(currentUser.metadata.role);
                         AuthService.setCredentials(currentUser);
-                        $state.go('admin.watches');
+                        $state.go('admin.products');
+                        console.log('admin.products');
                     }
                     else
                         Flash.create('danger', 'Incorrect username or password');

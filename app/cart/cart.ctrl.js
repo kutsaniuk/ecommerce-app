@@ -34,25 +34,23 @@
         });
         
         function stripeCheckout(order) {
-            if (vm.orderForm.$valid) {
-                handler.open({
-                    name: 'Ecommerce App',
-                    description: vm.watches.length + ' watches',
-                    amount: vm.totalPrice * 100
-                }).then(function(result) {
-                    console.log("Order complete!");
-                    $http.post('/charge', {
-                        stripeToken: result[0].id,
-                        description: vm.watches.length + ' watches',
-                        amount: vm.totalPrice * 100,
-                        order: order
-                    }).then(function () {
-                        completeOrder(order);
-                    });
-                },function() {
-                    console.log("Stripe Checkout closed without making a sale :(");
+            handler.open({
+                name: 'Ecommerce App',
+                description: vm.products.length + ' products',
+                amount: vm.totalPrice * 100
+            }).then(function(result) {
+                console.log("Order complete!");
+                $http.post('/charge', {
+                    stripeToken: result[0].id,
+                    description: vm.products.length + ' products',
+                    amount: vm.totalPrice * 100,
+                    order: order
+                }).then(function () {
+                    completeOrder(order);
                 });
-            }
+            },function() {
+                console.log("Stripe Checkout closed without making a sale :(");
+            });
         }
 
         function addToCart(item) {

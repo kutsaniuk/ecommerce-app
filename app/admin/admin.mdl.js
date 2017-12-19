@@ -3,8 +3,8 @@
     
     angular
         .module('admin', [
-            'admin.watches',
-            'admin.orders'
+            'admin.products',
+            // 'admin.orders'
         ])
         .config(config);
 

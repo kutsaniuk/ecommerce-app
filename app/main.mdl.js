@@ -57,7 +57,7 @@
             
             switch (crAcl.getRole()) {
                 case 'ROLE_ADMIN':
-                    state = 'admin.watches';
+                    state = 'admin.products';
                     break;
                 default : state = 'main.home';
             }
@@ -110,11 +110,11 @@
             });
 
         crAcl
-            .setRedirect('main.watch');
+            .setRedirect('auth');
 
         if ($rootScope.globals.currentUser) {
             crAcl.setRole($rootScope.globals.currentUser.metadata.role);
-            // $state.go('admin.watches');
+            $state.go('admin.products');
         }
         else {
             crAcl.setRole();

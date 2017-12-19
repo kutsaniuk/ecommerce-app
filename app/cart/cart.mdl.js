@@ -2,9 +2,7 @@
     'use strict';
     
     angular
-        .module('cart', [
-            'cart.checkout'
-        ])
+        .module('cart', [])
         .config(config); 
 
     config.$inject = ['$stateProvider', 'StripeCheckoutProvider'];

@@ -1,4 +1,4 @@
-<div class="row" id="checkout-row">
+<div class="row" id="checkout-row" ng-init="vm.init()">
     <div class="content">
         <div id="checkout-page">
             <div class="row">
@@ -10,20 +10,23 @@
                         <div class="checkout-tab-bar row">
                             <div class="col-md-6 columns">
                                 <p>
-                                    <i class="fa fa-circle-thin"></i>
-                                    Step 1: Billing/Shipping Address
+                                    <i class="fa fa-circle-thin" ng-if="vm.shopAdressForm.$invalid"></i>
+                                    <i class="fa fa-check goback-icon" ng-if="vm.shopAdressForm.$valid"></i>
+                                    <span ng-if="vm.shopAdressForm.$invalid">Step 1: Billing/Shipping Address</span>
+                                    <a class="goback-tab data-ajax-url" ng-if="vm.shopAdressForm.$valid">Step 1: Billing/Shipping Address</a>
 
                                 </p>
                             </div>
                             <div class="col-md-6 columns text-right">
-                                <span class="status">In Progress</span>
+                                <span class="status" ng-if="vm.shopAdressForm.$invalid">In Progress</span>
+                                <span class="status goback-icon" ng-if="vm.shopAdressForm.$valid">Complete</span>
                             </div>
                         </div>
-                        <div class="checkout-content checkout-open">
+                        <div ng-show="vm.steps.shopAddress.visible" class="checkout-content checkout-open">
 
                             <div id="address-form" class="row">
 
-                                <form class="custom" data-validation-message="" method="post" action="/checkout">
+                                <form name="vm.shopAdressForm" class="custom">
                                     <div class="col-md-12" style="padding-bottom: 0;">
                                         <div class="col-md-12 col-sm-12 col-lg-6">
 
@@ -40,51 +43,59 @@
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_firstName">First Name</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           name="billingInfo[firstName]" id="billing_firstName"
-                                                           value="sssss" placeholder="Jonathan">
+                                                           ng-model="vm.billing.firstName" id="billing_firstName"
+                                                           name="billingFirstName"
+                                                           value="" placeholder="Jonathan" required>
                                                     <span class="error small text-danger"></span>
 
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_lastName">Last Name</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           name="billingInfo[lastName]" id="billing_lastName"
-                                                           value="ssssssssss" placeholder="Doe">
+                                                           ng-model="vm.billing.lastName" id="billing_lastName"
+                                                           name="billingLastName"
+                                                           value="" placeholder="Doe" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_email">E-mail Address</label>
-                                                    <input type="email" class="form-control" name="billingInfo[email]"
-                                                           id="billing_email" value="kutsaniuk@asd.cpm"
-                                                           placeholder="example@email.com">
+                                                    <input type="email" class="form-control" name="billingEmail"
+                                                           ng-model="vm.billing.email"
+                                                           id="billing_email" value=""
+                                                           placeholder="example@email.com" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_phone">Phone Number</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           name="billingInfo[phone]" id="billing_phone" value=""
-                                                           placeholder="(012) 345-6789">
+                                                           name="billingPhone" id="billing_phone" value=""
+                                                           ng-model="vm.billing.phone"
+                                                           placeholder="(012) 345-6789" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-12 form-group">
                                                     <label for="billing_address">Address</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           id="billing_address" name="billingInfo[streetAddressLine1]"
-                                                           value="ssssssss" placeholder="123 Example Dr">
+                                                           id="billing_address" name="billingAddress"
+                                                           ng-model="vm.billing.address"
+                                                           value="" placeholder="123 Example Dr" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_city">City</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           name="billingInfo[city]" id="billing_city" value="sssssssss"
-                                                           placeholder="Vancouver">
+                                                           name="billingCity" id="billing_city" value=""
+                                                           ng-model="vm.billing.city"
+                                                           placeholder="Vancouver" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_postalCode">Zip Code</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           id="billing_postalCode" name="billingInfo[postalCode]"
-                                                           value="ssssssssss" placeholder="A1B2C3">
+                                                           id="billing_postalCode"
+                                                           name="billingPostalCode"
+                                                           ng-model="vm.billing.postalCode"
+                                                           value="" placeholder="A1B2C3" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
@@ -94,8 +105,10 @@
                                                       See app.js for the implementation details.
                                                       -->
                                                     <select data-mirror="" id="billing_country"
+                                                            required
                                                             class="chzn-select form-control"
-                                                            name="billingInfo[countryId]"
+                                                            ng-model="vm.billing.country"
+                                                            name="billingCountry"
                                                             data-state-selector="#billing_state" data-current-state="">
                                                         <option selected="" value="24">Afghanistan</option>
                                                         <option value="25">Aland Islands ﻿ Åland Islands</option>
@@ -353,12 +366,11 @@
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_state" class="hide">State</label>
-                                                    <select data-mirror="" id="billing_state"
-                                                            class="chzn-select form-control" name="billingInfo[stateId]"
-                                                            data-ajax-refresh="">
-                                                        <option selected="" value="">- no states -</option>
-
-                                                    </select>
+                                                    <input id="billing_state"
+                                                            required
+                                                            class="chzn-select form-control"
+                                                            ng-model="vm.billing.state"
+                                                            name="billingState">
                                                     <span class="error small text-danger"></span>
                                                 </div>
 
@@ -367,10 +379,12 @@
 
                                         <div class="col-md-12 col-sm-12 col-lg-6" id="mobile-shipping">
                                             <p id="title-p-d">Shipping Address |
-                                                <a data-toggle-mirror="on" class="btn-form-mirror">
+                                                <a data-toggle-mirror="on" class="btn-form-mirror" uib-btn-checkbox
+                                                   ng-change="vm.setSameAsBillingAddress()"
+                                                   ng-model="vm.sameAsBillingAddress">
             <span class="fa-stack">
               <i class="fa fa-square-o fa-stack-2x" style="visibility:visible"></i>
-              <i class="fa fa-check fa-stack-1x" style="visibility:visible" id="check-box"></i>
+              <i class="fa fa-check fa-stack-1x" style="visibility:visible" id="check-box" ng-show="vm.sameAsBillingAddress"></i>
             </span>
                                                     Same as Billing Address
                                                 </a>
@@ -380,51 +394,79 @@
                                             <div id="shipping-info" class="row">
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_firstName">First Name</label>
-                                                    <input data-mirror="" type="text" class="form-control disabled"
-                                                           name="shippingInfo[firstName]" id="shipping_firstName"
-                                                           value="sssss" placeholder="First Name">
+                                                    <input data-mirror="" type="text" class="form-control"
+                                                           ng-model="vm.shipping.firstName"
+                                                           name="firstName"
+                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           required
+                                                           id="shipping_firstName"
+                                                           value="" placeholder="First Name">
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_lastName">Last Name</label>
-                                                    <input data-mirror="" type="text" class="form-control disabled"
-                                                           name="shippingInfo[lastName]" id="shipping_lastName"
+                                                    <input data-mirror="" type="text" class="form-control"
+                                                           ng-model="vm.shipping.lastName"
+                                                           name="lastName"
+                                                           required
+                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           id="shipping_lastName"
                                                            value="ssssssssss" placeholder="Last Name">
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_phone">Phone Number</label>
-                                                    <input data-mirror="" type="text" class="form-control disabled"
-                                                           name="shippingInfo[phone]" id="shipping_phone" value=""
+                                                    <input data-mirror="" type="text" class="form-control"
+                                                           ng-model="vm.shipping.phone"
+                                                           name="phone"
+                                                           required
+                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           id="shipping_phone" value=""
                                                            placeholder="(012) 345-6789">
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-12 form-group">
                                                     <label for="shipping_address">Address</label>
-                                                    <input data-mirror="" type="text" class="form-control disabled"
-                                                           name="shippingInfo[streetAddressLine1]" id="shipping_address"
+                                                    <input data-mirror="" type="text" class="form-control"
+                                                           ng-model="vm.shipping.address"
+                                                           id="shipping_address"
+                                                           required
+                                                           name="address"
+                                                           ng-disabled="vm.sameAsBillingAddress"
                                                            value="ssssssss" placeholder="Address">
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_city">City</label>
-                                                    <input data-mirror="" type="text" class="form-control disabled"
-                                                           name="shippingInfo[city]" id="shipping_city"
-                                                           value="sssssssss" placeholder="City">
+                                                    <input data-mirror="" type="text"
+                                                           class="form-control"
+                                                           ng-model="vm.shipping.city"
+                                                           required
+                                                           name="city"
+                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           id="shipping_city"
+                                                           value="" placeholder="City">
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_postalCode">Zip Code</label>
-                                                    <input data-mirror="" type="text" class="form-control disabled"
-                                                           name="shippingInfo[postalCode]" id="shipping_postalCode"
-                                                           value="ssssssssss" placeholder="Zip Code">
+                                                    <input data-mirror="" type="text"
+                                                           class="form-control"
+                                                           ng-model="vm.shipping.postalCode"
+                                                           required
+                                                           name="postalCode"
+                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           id="shipping_postalCode"
+                                                           value="" placeholder="Zip Code">
                                                     <span class="error small text-danger"></span>
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_country" class="hide">Country</label>
                                                     <select data-mirror="" id="shipping_country"
-                                                            class="chzn-select form-control disabled"
-                                                            name="shippingInfo[countryId]"
+                                                            class="chzn-select form-control"
+                                                            ng-model="vm.shipping.country"
+                                                            name="country"
+                                                            ng-disabled="vm.sameAsBillingAddress"
                                                             data-state-selector="#shipping_state" data-current-state="">
                                                         <option selected="" value="24">Afghanistan</option>
                                                         <option value="25">Aland Islands ﻿ Åland Islands</option>
@@ -682,11 +724,12 @@
                                                 </div>
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_state" class="hide">State</label>
-                                                    <select data-mirror="" id="shipping_state"
-                                                            class="chzn-select form-control disabled"
-                                                            name="shippingInfo[stateId]" data-ajax-refresh="">
-                                                        <option selected="" value="">- no states -</option>
-                                                    </select>
+                                                    <input data-mirror="" id="shipping_state"
+                                                            class="chzn-select form-control"
+                                                            ng-model="vm.shipping.state"
+                                                            required
+                                                            name="state"
+                                                            ng-disabled="vm.sameAsBillingAddress">
                                                     <span class="error small text-danger"></span>
                                                 </div>
 
@@ -694,11 +737,8 @@
                                         </div>
                                         <div class="col-sm-12">
                                             <a class="btn btn-important pull-right data-ajax-url"
-                                               data-ajax-handler="shop:checkout"
-                                               data-ajax-update="#checkout-page=shop-checkout, #checkout-totals=shop-checkout-totals"
-                                               data-hash="step-2">Proceed to Shipping</a>
-                                            <input type="hidden" name="step" value="billing_info,shipping_info">
-                                            <input type="hidden" name="nextStep" value="shipping_method">
+                                               ng-click="vm.openStep('shopShip')"
+                                               ng-disabled="vm.shopAdressForm.$invalid">Proceed to Shipping</a>
 
                                         </div>
                                     </div>
@@ -714,24 +754,51 @@
                         <div class="checkout-tab-bar row">
                             <div class="col-md-6 columns">
                                 <p>
-                                    <i class="fa fa-circle-thin"></i>
-                                    Step 2: Shipping Method
+                                    <i class="fa fa-circle-thin" ng-if="!vm.steps.shopShip.success"></i>
+                                    <i class="fa fa-check goback-icon" ng-if="vm.steps.shopShip.success"></i>
+                                    <span ng-if="!vm.steps.shopShip.success">Step 2: Shipping Method</span>
+                                    <a class="goback-tab data-ajax-url" ng-if="vm.steps.shopShip.success">Step 2: Shipping Method</a>
                                 </p>
                             </div>
                             <div class="col-md-6 columns text-right">
-                                <span class="status">Fill out Billing Info</span>
+                                <span class="status" ng-if="!vm.steps.shopShip.success">In Progress</span>
+                                <span class="status goback-icon" ng-if="vm.steps.shopShip.success">Complete</span>
                             </div>
                         </div>
 
-                        <div class="checkout-content">
+                        <div ng-show="vm.steps.shopShip.visible" class="checkout-content checkout-open">
                             <div id="shop-checkout-shipping-method" class="col-md-12 row">
                                 <form class="custom" method="post" action="/checkout">
 
                                     <div class="col-md-12">
                                         <p id="title-p-d">Choose a Shipping Method</p>
 
-                                        <p>Please fill out billing/shipping info</p>
+
+                                        <input type="hidden" value="" name="shippingMethod"><br>
+                                        <table class="compact full-width" id="shipping-methods">
+                                            <tbody><tr>
+                                                <td>
+                                                    <label for="option2">
+                                                        <!-- The shipping method radio button clicks are handled in the app.js -->
+                                                        <input name="shippingMethod" value="2" type="radio" id="option2" checked="">
+
+                      <span class="choice-title">
+                        Test Shipping
+                                              </span>
+
+                                                    </label>
+                                                </td>
+                                                <td class="narrow">
+                                                    $20.00
+                                                </td>
+                                            </tr>
+                                            </tbody></table>
+                                        <!-- End shippingOptions if -->
                                         <!-- end checkout step -->
+
+                                        <br><br>
+                                        <a class="btn btn-important pull-right data-ajax-url" ng-click="vm.openStep('shopPay')">Proceed to Pay</a>
+                                        <a class="btn btn-default pull-left data-ajax-url" ng-click="vm.openStep('shopAddress')">Previous Step</a>
 
                                     </div>
                                 </form>
@@ -744,28 +811,31 @@
                         <div class="checkout-tab-bar row">
                             <div class="col-md-6 columns">
                                 <p>
-                                    <i class="fa fa-circle-thin"></i>
-                                    Step 3: Payment Method
+                                    <i class="fa fa-circle-thin" ng-if="!vm.steps.shopPay.success"></i>
+                                    <i class="fa fa-check goback-icon" ng-if="vm.steps.shopPay.success"></i>
+                                    <span ng-if="!vm.steps.shopPay.success">Step 3: Payment Method</span>
+                                    <a class="goback-tab data-ajax-url" ng-if="vm.steps.shopPay.success">Step 3: Payment Method</a>
                                 </p>
                             </div>
                             <div class="col-md-6 columns text-right">
-                                <span class="status">Fill out Billing Info</span>
+                                <span class="status" ng-if="!vm.steps.shopPay.success">In Progress</span>
+                                <span class="status goback-icon" ng-if="vm.shopPay.shopShip.success">Complete</span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="checkout-content">
+                    <div ng-show="vm.steps.shopPay.visible" class="checkout-content checkout-open">
                         <div id="shop-checkout-payment-method" class="col-md-12 row">
                             <div class="col-md-12">
-                                <p id="title-p-d">Select a Payment Method</p>
-                                <p>Please fill out billing/shipping info</p>
+                                <button class="btn btn-important" ng-click="cart.stripeCheckout(cart.order)">Complete Order</button>
+
                             </div>
                         </div>
                     </div>
                 </div>
 
 
-                <div class="col-md-3">
+                <div class="col-md-3" ng-controller="CartCtrl as vm" ng-init="vm.getCart()">
                     <div class="checkout-tab" id="shop-cart">
                         <div class="checkout-tab-bar row">
                             <div class="col-md-6 columns">
@@ -773,25 +843,18 @@
                             </div>
                         </div>
                         <div class="checkout-content checkout-open">
-                            <div class="row" id="cart-row">
+                            <div class="row" id="cart-row" ng-repeat="product in cart.products">
 
                                 <div class="col-sm-2" id="cart-img" style="padding:0;">
-                                    <img src="//dd6vif294zh3b.cloudfront.net/store-tanto-543852ae9b0a6/uploaded/thumbnails/4a_autoxauto-jpg-keep-ratio.png?1422487489"
-                                         alt="Dark Coffee Table">
+                                    <img alt="{{product.title}}" ng-src="{{product.metadata.images.image_1.url}}">
                                 </div>
                                 <div class="col-sm-10" style="padding-right:0px;">
-                                    <a href="/product/dark-coffee-table">Dark Coffee Table</a><br>
+                                    <a ui-sref="main.product({id: product.slug})">{{product.title}}</a>
 
-                                    <p class="small">Quantity: <span class="pull-right">1 x $90.00</span></p>
-                                    <p class="small">Total: <span class="pull-right">$90.00</span></p>
+                                    <p class="small">Total: <span class="pull-right">${{product.metadata.price}}</span></p>
                                 </div>
                             </div>
-
-                            <hr>
-  <span id="checkout-totals"><p>Subtotal: <span class="pull-right">$90.00</span></p>
-<p>Tax: <span class="pull-right">$0.00</span></p>
-<br>
-<p class="subtotal"><strong>Total:</strong> <span class="pull-right"><strong>$90.00</strong></span></p></span>
+                            <p class="subtotal"><strong>Total:</strong> <span class="pull-right"><strong>${{cart.totalPrice}}</strong></span></p></span>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,8 @@
         $stateProvider
             .state('main.checkout', {
                 url: 'checkout',
-                templateUrl: '../views/checkout/checkout.html'
+                templateUrl: '../views/checkout/checkout.html',
+                controller: 'CheckoutCtrl as vm'
             });
     }
 })();

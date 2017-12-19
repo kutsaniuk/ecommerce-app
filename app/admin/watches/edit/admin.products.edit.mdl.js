@@ -2,22 +2,22 @@
     'use strict';
     
     angular
-        .module('admin.watches.edit', [])
+        .module('admin.products.edit', [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
     function config($stateProvider, $urlRouterProvider) {
  
         $stateProvider
-            .state('admin.watches.edit', {
+            .state('admin.products.edit', {
                 url: '/edit/:slug',
                 onEnter: [
                 'ngDialog',
-                'WatchService',
+                'ProductService',
                 '$stateParams',
                 '$state',
                 '$log',
-                function (ngDialog, WatchService, $stateParams, $state, $log) {
+                function (ngDialog, ProductService, $stateParams, $state, $log) {
                     getWatch($stateParams.slug);
     
                     function getWatch(slug) {
@@ -28,23 +28,23 @@
                         function failed(response) {
                             $log.error(response);
                         }
- 
-                        WatchService
-                            .getWatchBySlug(slug)
+
+                        ProductService
+                            .getProductBySlug(slug)
                             .then(success, failed);
                     }
     
                     function openDialog(data) {
     
                         var options = {
-                            templateUrl: '../views/admin/admin.watches.edit.html',
+                            templateUrl: '../views/admin/admin.products.edit.html',
                             data: data,
-                            controller: 'AdminWatchesEdit as vm',
+                            controller: 'AdminProductsEdit as vm',
                             showClose: true
                         };
     
                         ngDialog.open(options).closePromise.finally(function () {
-                            $state.go('admin.watches');
+                            $state.go('admin.products');
                         });
                     }
                 }],

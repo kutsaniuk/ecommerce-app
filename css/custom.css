@@ -117,3 +117,7 @@
     background: linear-gradient(135deg, #85d7de 0%, #e0a979 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#85d7de', endColorstr='#e0a979', GradientType=1);
 }
+
+input.ng-invalid, select.ng-invalid {
+    border-color: #a94442;
+}

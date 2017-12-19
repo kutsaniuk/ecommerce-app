@@ -2,9 +2,9 @@
     'use strict';
     
     angular
-        .module('admin.watches', [
-            'admin.watches.edit',
-            'admin.watches.add'
+        .module('admin.products', [
+            // 'admin.products.edit',
+            // 'admin.products.add'
         ])
         .config(config);
 
@@ -12,10 +12,10 @@
     function config($stateProvider, $urlRouterProvider) {
  
         $stateProvider
-            .state('admin.watches', {
-                url: 'watches?key&value',
-                templateUrl: '../views/admin/admin.watches.html',
-                controller: 'WatchCtrl as vm',
+            .state('admin.products', {
+                url: 'products?key&value',
+                templateUrl: '../views/admin/admin.products.html',
+                controller: 'ProductsCtrl as vm',
                 data: {
                     is_granted: ['ROLE_ADMIN']
                 }

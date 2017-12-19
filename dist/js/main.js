@@ -57,7 +57,7 @@
             
             switch (crAcl.getRole()) {
                 case 'ROLE_ADMIN':
-                    state = 'admin.watches';
+                    state = 'admin.products';
                     break;
                 default : state = 'main.home';
             }
@@ -110,11 +110,11 @@
             });
 
         crAcl
-            .setRedirect('main.watch');
+            .setRedirect('auth');
 
         if ($rootScope.globals.currentUser) {
             crAcl.setRole($rootScope.globals.currentUser.metadata.role);
-            // $state.go('admin.watches');
+            $state.go('admin.products');
         }
         else {
             crAcl.setRole();
@@ -164,8 +164,8 @@
     
     angular
         .module('admin', [
-            'admin.watches',
-            'admin.orders'
+            'admin.products',
+            // 'admin.orders'
         ])
         .config(config);
 
@@ -213,7 +213,8 @@
 
                         crAcl.setRole(currentUser.metadata.role);
                         AuthService.setCredentials(currentUser);
-                        $state.go('admin.watches');
+                        $state.go('admin.products');
+                        console.log('admin.products');
                     }
                     else
                         Flash.create('danger', 'Incorrect username or password');
@@ -338,25 +339,23 @@
         });
         
         function stripeCheckout(order) {
-            if (vm.orderForm.$valid) {
-                handler.open({
-                    name: 'Ecommerce App',
-                    description: vm.watches.length + ' watches',
-                    amount: vm.totalPrice * 100
-                }).then(function(result) {
-                    console.log("Order complete!");
-                    $http.post('/charge', {
-                        stripeToken: result[0].id,
-                        description: vm.watches.length + ' watches',
-                        amount: vm.totalPrice * 100,
-                        order: order
-                    }).then(function () {
-                        completeOrder(order);
-                    });
-                },function() {
-                    console.log("Stripe Checkout closed without making a sale :(");
+            handler.open({
+                name: 'Ecommerce App',
+                description: vm.products.length + ' products',
+                amount: vm.totalPrice * 100
+            }).then(function(result) {
+                console.log("Order complete!");
+                $http.post('/charge', {
+                    stripeToken: result[0].id,
+                    description: vm.products.length + ' products',
+                    amount: vm.totalPrice * 100,
+                    order: order
+                }).then(function () {
+                    completeOrder(order);
                 });
-            }
+            },function() {
+                console.log("Stripe Checkout closed without making a sale :(");
+            });
         }
 
         function addToCart(item) {
@@ -471,9 +470,7 @@
     'use strict';
     
     angular
-        .module('cart', [
-            'cart.checkout'
-        ])
+        .module('cart', [])
         .config(config); 
 
     config.$inject = ['$stateProvider', 'StripeCheckoutProvider'];
@@ -623,6 +620,66 @@
         });  
 })();  
 (function () {
+    'use strict'; 
+ 
+    angular
+        .module('main')
+        .controller('CheckoutCtrl', CheckoutCtrl);
+
+    function CheckoutCtrl($scope, ProductService, Notification, $log, MEDIA_URL, $state) {
+        var vm = this;
+
+        vm.shopAdressForm = null;
+
+        vm.sameAsBillingAddress = false;
+
+        vm.billing = {};
+        vm.shipping = {};
+
+        vm.steps = {
+            shopAddress: {
+                visible: true,
+                success: false
+            },
+            shopShip: {
+                visible: false,
+                success: false
+            },
+            shopPay: {
+                visible: false,
+                success: false
+            }
+        };
+
+        vm.init = function () {
+            // openStep('shopAddress');
+        };
+        
+        vm.openStep = openStep;
+        vm.setSameAsBillingAddress = setSameAsBillingAddress;
+
+
+        function openStep(step) {
+            if (vm.shopAdressForm.$invalid) return;
+
+            for (var name in vm.steps)
+                vm.steps[name].visible = false;
+
+            vm.steps[step].visible = true;
+            vm.steps[step].success = true;
+        }
+
+        function setSameAsBillingAddress() {
+            if (!vm.sameAsBillingAddress) return;
+
+            for (var key in vm.billing)
+                vm.shipping[key] = vm.billing[key];
+        }
+
+    }
+})();
+
+(function () {
     'use strict';
     
     angular
@@ -635,7 +692,8 @@
         $stateProvider
             .state('main.checkout', {
                 url: 'checkout',
-                templateUrl: '../views/checkout/checkout.html'
+                templateUrl: '../views/checkout/checkout.html',
+                controller: 'CheckoutCtrl as vm'
             });
     }
 })();
@@ -1303,32 +1361,6 @@ angular.module("config", [])
         });
 })();  
 (function () {
-    'use strict';
-    
-    angular
-        .module('admin.watches', [
-            'admin.watches.edit',
-            'admin.watches.add'
-        ])
-        .config(config);
-
-    config.$inject = ['$stateProvider', '$urlRouterProvider'];
-    function config($stateProvider, $urlRouterProvider) {
- 
-        $stateProvider
-            .state('admin.watches', {
-                url: 'watches?key&value',
-                templateUrl: '../views/admin/admin.watches.html',
-                controller: 'WatchCtrl as vm',
-                data: {
-                    is_granted: ['ROLE_ADMIN']
-                }
-            });
-    }
-    
-})();
- 
-(function () {
     'use strict'; 
 
     angular
@@ -1512,30 +1544,26 @@ angular.module("config", [])
     'use strict';
     
     angular
-        .module('cart.checkout', [])
-        .config(config); 
+        .module('admin.products', [
+            // 'admin.products.edit',
+            // 'admin.products.add'
+        ])
+        .config(config);
 
-    config.$inject = ['$stateProvider', 'StripeCheckoutProvider'];
-    function config($stateProvider, StripeCheckoutProvider) {
+    config.$inject = ['$stateProvider', '$urlRouterProvider'];
+    function config($stateProvider, $urlRouterProvider) {
  
         $stateProvider
-            .state('main.cart.checkout', {
-                url: '/checkout',
-                views: {
-                    '@main': {
-                        templateUrl: '../views/cart/cart.checkout.html'
-                    }
-                }
-            })
-            .state('main.cart.thankYou', {
-                url: '/thank-you',
-                views: {
-                    '@main': {
-                        templateUrl: '../views/cart/cart.thank-you.html'
-                    }
+            .state('admin.products', {
+                url: 'products?key&value',
+                templateUrl: '../views/admin/admin.products.html',
+                controller: 'ProductsCtrl as vm',
+                data: {
+                    is_granted: ['ROLE_ADMIN']
                 }
             });
     }
+    
 })();
  
 (function () {
@@ -1590,6 +1618,62 @@ angular.module("config", [])
             });
     }
     
+})();
+ 
+(function () {
+    'use strict';
+    
+    angular
+        .module('admin.orders.preview', [])
+        .config(config);
+
+    config.$inject = ['$stateProvider', '$urlRouterProvider'];
+    function config($stateProvider, $urlRouterProvider) {
+
+        $stateProvider
+            .state('admin.orders.preview', {
+                url: '/preview/:slug',
+                data: {
+                    is_granted: ['ROLE_ADMIN']
+                },
+                onEnter: [
+                    'ngDialog',
+                    'AdminOrdersService',
+                    '$stateParams',
+                    '$state',
+                    '$log',
+                    function (ngDialog, AdminOrdersService, $stateParams, $state, $log) {
+                        getOrder($stateParams.slug);
+
+                        function getOrder(slug) {
+                            function success(response) {
+                                openDialog(response.data.object);
+                            }
+
+                            function failed(response) {
+                                $log.error(response);
+                            }
+
+                            AdminOrdersService
+                                .getOrderBySlug(slug)
+                                .then(success, failed);
+                        }
+
+                        function openDialog(data) {
+
+                            var options = {
+                                templateUrl: '../views/admin/admin.orders.preview.html',
+                                data: data,
+                                showClose: true
+                            };
+
+                            ngDialog.open(options).closePromise.finally(function () {
+                                $state.go('admin.orders');
+                            });
+                        }
+                    }]
+            });
+    }
 })();
  
 (function () {
@@ -1719,9 +1803,9 @@ angular.module("config", [])
 
     angular
         .module('main')
-        .controller('AdminWatchesEdit', AdminWatchesEdit);
+        .controller('AdminProductsEdit', AdminProductsEdit);
 
-    function AdminWatchesEdit($state, WatchService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
+    function AdminProductsEdit($state, WatchService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
         var vm = this;
 
         vm.updateWatch = updateWatch;
@@ -1823,22 +1907,22 @@ angular.module("config", [])
     'use strict';
     
     angular
-        .module('admin.watches.edit', [])
+        .module('admin.products.edit', [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
     function config($stateProvider, $urlRouterProvider) {
  
         $stateProvider
-            .state('admin.watches.edit', {
+            .state('admin.products.edit', {
                 url: '/edit/:slug',
                 onEnter: [
                 'ngDialog',
-                'WatchService',
+                'ProductService',
                 '$stateParams',
                 '$state',
                 '$log',
-                function (ngDialog, WatchService, $stateParams, $state, $log) {
+                function (ngDialog, ProductService, $stateParams, $state, $log) {
                     getWatch($stateParams.slug);
     
                     function getWatch(slug) {
@@ -1849,23 +1933,23 @@ angular.module("config", [])
                         function failed(response) {
                             $log.error(response);
                         }
- 
-                        WatchService
-                            .getWatchBySlug(slug)
+
+                        ProductService
+                            .getProductBySlug(slug)
                             .then(success, failed);
                     }
     
                     function openDialog(data) {
     
                         var options = {
-                            templateUrl: '../views/admin/admin.watches.edit.html',
+                            templateUrl: '../views/admin/admin.products.edit.html',
                             data: data,
-                            controller: 'AdminWatchesEdit as vm',
+                            controller: 'AdminProductsEdit as vm',
                             showClose: true
                         };
     
                         ngDialog.open(options).closePromise.finally(function () {
-                            $state.go('admin.watches');
+                            $state.go('admin.products');
                         });
                     }
                 }],
@@ -1875,61 +1959,5 @@ angular.module("config", [])
             });
     }
     
-})();
- 
-(function () {
-    'use strict';
-    
-    angular
-        .module('admin.orders.preview', [])
-        .config(config);
-
-    config.$inject = ['$stateProvider', '$urlRouterProvider'];
-    function config($stateProvider, $urlRouterProvider) {
-
-        $stateProvider
-            .state('admin.orders.preview', {
-                url: '/preview/:slug',
-                data: {
-                    is_granted: ['ROLE_ADMIN']
-                },
-                onEnter: [
-                    'ngDialog',
-                    'AdminOrdersService',
-                    '$stateParams',
-                    '$state',
-                    '$log',
-                    function (ngDialog, AdminOrdersService, $stateParams, $state, $log) {
-                        getOrder($stateParams.slug);
-
-                        function getOrder(slug) {
-                            function success(response) {
-                                openDialog(response.data.object);
-                            }
-
-                            function failed(response) {
-                                $log.error(response);
-                            }
-
-                            AdminOrdersService
-                                .getOrderBySlug(slug)
-                                .then(success, failed);
-                        }
-
-                        function openDialog(data) {
-
-                            var options = {
-                                templateUrl: '../views/admin/admin.orders.preview.html',
-                                data: data,
-                                showClose: true
-                            };
-
-                            ngDialog.open(options).closePromise.finally(function () {
-                                $state.go('admin.orders');
-                            });
-                        }
-                    }]
-            });
-    }
 })();
  
