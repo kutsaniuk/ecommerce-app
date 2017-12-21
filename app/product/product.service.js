@@ -11,71 +11,11 @@
             
             $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-            this.watch = {
+            this.product = {
                 title: null,
-                type_slug: 'watches',
+                type_slug: 'products',
                 content: null,
                 metafields: [
-                    {
-                        key: "category",
-                        title: "Category",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "brand",
-                        title: "Brand",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "case_size",
-                        title: "Case Size",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "case_thickness",
-                        title: "Case Thickness",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "strap_width",
-                        title: "Strap Width",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "movement",
-                        title: "Movement",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "glass",
-                        title: "Glass",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "water_resistance",
-                        title: "Water Resistance",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "color",
-                        title: "Color",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "strap_material",
-                        title: "Strap Material",
-                        type: "text",
-                        value: null
-                    },
                     {
                         key: "price",
                         title: "Price",
@@ -126,8 +66,8 @@
                         }
                     });
             };
-            this.getWatchesParams = function () {
-                return $http.get(URL + BUCKET_SLUG + '/object-type/watches', {
+            this.getProductsParams = function () {
+                return $http.get(URL + BUCKET_SLUG + '/object-type/products', {
                     params: {
                         limit: 100,
                         read_key: READ_KEY
@@ -141,12 +81,12 @@
                     }
                 });
             };
-            this.updateWatch = function (event) {
-                event.write_key = WRITE_KEY;
+            this.updateProduct = function (product) {
+                product.write_key = WRITE_KEY;
 
-                return $http.put(URL + BUCKET_SLUG + '/edit-object', event);
+                return $http.put(URL + BUCKET_SLUG + '/edit-object', product);
             };
-            this.removeWatch = function (slug) {
+            this.removeProduct = function (slug) {
                 return $http.delete(URL + BUCKET_SLUG + '/' + slug, {
                     ignoreLoadingBar: true,
                     headers:{
@@ -157,10 +97,10 @@
                     }
                 });
             };
-            this.createWatch = function (watch) {
-                watch.write_key = WRITE_KEY;
+            this.createProduct = function (product) {
+                product.write_key = WRITE_KEY;
                 
-                return $http.post(URL + BUCKET_SLUG + '/add-object', watch);
+                return $http.post(URL + BUCKET_SLUG + '/add-object', product);
             };
             this.upload = function (file) {
                 var fd = new FormData();

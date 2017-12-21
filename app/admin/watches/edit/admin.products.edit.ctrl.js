@@ -5,10 +5,10 @@
         .module('main')
         .controller('AdminProductsEdit', AdminProductsEdit);
 
-    function AdminProductsEdit($state, WatchService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
+    function AdminProductsEdit($state, ProductService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
         var vm = this;
 
-        vm.updateWatch = updateWatch;
+        vm.updateProduct = updateProduct;
         vm.cancelUpload = cancelUpload;
         vm.upload = upload;
 
@@ -18,7 +18,9 @@
         vm.uploadProgress = [0, 0, 0];
 
         vm.event = {};
-        vm.flow = {};
+        vm.flow = {
+            files: null
+        };
         vm.background = {};
 
         vm.flowConfig = {
@@ -26,7 +28,7 @@
             singleFile: false
         };
 
-        function updateWatch(watch) {
+        function updateProduct(product) {
             function success(response) {
                 $log.info(response);
 
@@ -38,8 +40,8 @@
                     }
                 );
 
-                $state.go('admin.watches', null, {reload: true});
                 ngDialog.close();
+                $state.go('admin.products', null, {reload: true});
             }
 
             function failed(response) {
@@ -51,26 +53,24 @@
                 vm.uploadProgress[0] === 100 &&
                 vm.uploadProgress[1] === 100 &&
                 vm.uploadProgress[2] === 100)
-                WatchService
-                    .updateWatch(watch)
+                ProductService
+                    .updateProduct(product)
                     .then(success, failed);
             else
-                WatchService
-                    .updateWatch(watch)
+                ProductService
+                    .updateProduct(product)
                     .then(success, failed);
         }
 
         function cancelUpload() {
             vm.flow.cancel();
-            vm.background = {
-                'background-image': 'url(' + (vm.event.metafields[0].value ? vm.event.metafields[0].url : DEFAULT_EVENT_IMAGE) + ')'
-            };
         }
 
         $scope.$watch('vm.flow.files[0].file.name', function () {
-            if (!vm.flow.files[0]) {
-                return ;
-            }
+            if (!vm.flow.files) return;
+
+            if (!vm.flow.files.length) return;
+
             var fileReader = new FileReader();
             fileReader.readAsDataURL(vm.flow.files[0].file);
             fileReader.onload = function (event) {
@@ -85,11 +85,11 @@
         function upload() {
             vm.flow.files.forEach(function (item, i) {
                 if (i < 3)
-                    WatchService
+                    ProductService
                         .upload(item.file)
                         .then(function(response){
 
-                            $scope.ngDialogData.metafields[11].children[i].value = response.media.name;
+                            $scope.ngDialogData.metafields[1].children[i].value = response.media.name;
 
                         }, function(){
                             console.log('failed :(');

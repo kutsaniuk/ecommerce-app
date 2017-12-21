@@ -43,7 +43,7 @@
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_firstName">First Name</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           ng-model="vm.billing.firstName" id="billing_firstName"
+                                                           ng-model="cart.cart.order.billing.firstName" id="billing_firstName"
                                                            name="billingFirstName"
                                                            value="" placeholder="Jonathan" required>
                                                     <span class="error small text-danger"></span>
@@ -52,7 +52,7 @@
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_lastName">Last Name</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           ng-model="vm.billing.lastName" id="billing_lastName"
+                                                           ng-model="cart.cart.order.billing.lastName" id="billing_lastName"
                                                            name="billingLastName"
                                                            value="" placeholder="Doe" required>
                                                     <span class="error small text-danger"></span>
@@ -60,7 +60,7 @@
                                                 <div class="col-sm-6 form-group">
                                                     <label for="billing_email">E-mail Address</label>
                                                     <input type="email" class="form-control" name="billingEmail"
-                                                           ng-model="vm.billing.email"
+                                                           ng-model="cart.cart.order.billing.email"
                                                            id="billing_email" value=""
                                                            placeholder="example@email.com" required>
                                                     <span class="error small text-danger"></span>
@@ -69,7 +69,7 @@
                                                     <label for="billing_phone">Phone Number</label>
                                                     <input data-mirror="" type="text" class="form-control"
                                                            name="billingPhone" id="billing_phone" value=""
-                                                           ng-model="vm.billing.phone"
+                                                           ng-model="cart.cart.order.billing.phone"
                                                            placeholder="(012) 345-6789" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
@@ -77,7 +77,7 @@
                                                     <label for="billing_address">Address</label>
                                                     <input data-mirror="" type="text" class="form-control"
                                                            id="billing_address" name="billingAddress"
-                                                           ng-model="vm.billing.address"
+                                                           ng-model="cart.cart.order.billing.address"
                                                            value="" placeholder="123 Example Dr" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
@@ -85,7 +85,7 @@
                                                     <label for="billing_city">City</label>
                                                     <input data-mirror="" type="text" class="form-control"
                                                            name="billingCity" id="billing_city" value=""
-                                                           ng-model="vm.billing.city"
+                                                           ng-model="cart.cart.order.billing.city"
                                                            placeholder="Vancouver" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
@@ -94,7 +94,7 @@
                                                     <input data-mirror="" type="text" class="form-control"
                                                            id="billing_postalCode"
                                                            name="billingPostalCode"
-                                                           ng-model="vm.billing.postalCode"
+                                                           ng-model="cart.cart.order.billing.postalCode"
                                                            value="" placeholder="A1B2C3" required>
                                                     <span class="error small text-danger"></span>
                                                 </div>
@@ -107,7 +107,7 @@
                                                     <select data-mirror="" id="billing_country"
                                                             required
                                                             class="chzn-select form-control"
-                                                            ng-model="vm.billing.country"
+                                                            ng-model="cart.cart.order.billing.country"
                                                             name="billingCountry"
                                                             data-state-selector="#billing_state" data-current-state="">
                                                         <option selected="" value="24">Afghanistan</option>
@@ -369,7 +369,7 @@
                                                     <input id="billing_state"
                                                             required
                                                             class="chzn-select form-control"
-                                                            ng-model="vm.billing.state"
+                                                            ng-model="cart.cart.order.billing.state"
                                                             name="billingState">
                                                     <span class="error small text-danger"></span>
                                                 </div>
@@ -380,11 +380,11 @@
                                         <div class="col-md-12 col-sm-12 col-lg-6" id="mobile-shipping">
                                             <p id="title-p-d">Shipping Address |
                                                 <a data-toggle-mirror="on" class="btn-form-mirror" uib-btn-checkbox
-                                                   ng-change="vm.setSameAsBillingAddress()"
-                                                   ng-model="vm.sameAsBillingAddress">
+                                                   ng-change="cart.setSameAsBillingAddress()"
+                                                   ng-model="cart.sameAsBillingAddress">
             <span class="fa-stack">
               <i class="fa fa-square-o fa-stack-2x" style="visibility:visible"></i>
-              <i class="fa fa-check fa-stack-1x" style="visibility:visible" id="check-box" ng-show="vm.sameAsBillingAddress"></i>
+              <i class="fa fa-check fa-stack-1x" style="visibility:visible" id="check-box" ng-show="cart.sameAsBillingAddress"></i>
             </span>
                                                     Same as Billing Address
                                                 </a>
@@ -395,9 +395,9 @@
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_firstName">First Name</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           ng-model="vm.shipping.firstName"
+                                                           ng-model="cart.cart.order.shipping.firstName"
                                                            name="firstName"
-                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           ng-disabled="cart.sameAsBillingAddress"
                                                            required
                                                            id="shipping_firstName"
                                                            value="" placeholder="First Name">
@@ -406,10 +406,10 @@
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_lastName">Last Name</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           ng-model="vm.shipping.lastName"
+                                                           ng-model="cart.cart.order.shipping.lastName"
                                                            name="lastName"
                                                            required
-                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           ng-disabled="cart.sameAsBillingAddress"
                                                            id="shipping_lastName"
                                                            value="ssssssssss" placeholder="Last Name">
                                                     <span class="error small text-danger"></span>
@@ -417,10 +417,10 @@
                                                 <div class="col-sm-6 form-group">
                                                     <label for="shipping_phone">Phone Number</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           ng-model="vm.shipping.phone"
+                                                           ng-model="cart.cart.order.shipping.phone"
                                                            name="phone"
                                                            required
-                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           ng-disabled="cart.sameAsBillingAddress"
                                                            id="shipping_phone" value=""
                                                            placeholder="(012) 345-6789">
                                                     <span class="error small text-danger"></span>
@@ -428,11 +428,11 @@
                                                 <div class="col-sm-12 form-group">
                                                     <label for="shipping_address">Address</label>
                                                     <input data-mirror="" type="text" class="form-control"
-                                                           ng-model="vm.shipping.address"
+                                                           ng-model="cart.cart.order.shipping.address"
                                                            id="shipping_address"
                                                            required
                                                            name="address"
-                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           ng-disabled="cart.sameAsBillingAddress"
                                                            value="ssssssss" placeholder="Address">
                                                     <span class="error small text-danger"></span>
                                                 </div>
@@ -440,10 +440,10 @@
                                                     <label for="shipping_city">City</label>
                                                     <input data-mirror="" type="text"
                                                            class="form-control"
-                                                           ng-model="vm.shipping.city"
+                                                           ng-model="cart.cart.order.shipping.city"
                                                            required
                                                            name="city"
-                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           ng-disabled="cart.sameAsBillingAddress"
                                                            id="shipping_city"
                                                            value="" placeholder="City">
                                                     <span class="error small text-danger"></span>
@@ -452,10 +452,10 @@
                                                     <label for="shipping_postalCode">Zip Code</label>
                                                     <input data-mirror="" type="text"
                                                            class="form-control"
-                                                           ng-model="vm.shipping.postalCode"
+                                                           ng-model="cart.cart.order.shipping.postalCode"
                                                            required
                                                            name="postalCode"
-                                                           ng-disabled="vm.sameAsBillingAddress"
+                                                           ng-disabled="cart.sameAsBillingAddress"
                                                            id="shipping_postalCode"
                                                            value="" placeholder="Zip Code">
                                                     <span class="error small text-danger"></span>
@@ -464,9 +464,9 @@
                                                     <label for="shipping_country" class="hide">Country</label>
                                                     <select data-mirror="" id="shipping_country"
                                                             class="chzn-select form-control"
-                                                            ng-model="vm.shipping.country"
+                                                            ng-model="cart.cart.order.shipping.country"
                                                             name="country"
-                                                            ng-disabled="vm.sameAsBillingAddress"
+                                                            ng-disabled="cart.sameAsBillingAddress"
                                                             data-state-selector="#shipping_state" data-current-state="">
                                                         <option selected="" value="24">Afghanistan</option>
                                                         <option value="25">Aland Islands ﻿ Åland Islands</option>
@@ -726,10 +726,10 @@
                                                     <label for="shipping_state" class="hide">State</label>
                                                     <input data-mirror="" id="shipping_state"
                                                             class="chzn-select form-control"
-                                                            ng-model="vm.shipping.state"
+                                                            ng-model="cart.cart.order.shipping.state"
                                                             required
                                                             name="state"
-                                                            ng-disabled="vm.sameAsBillingAddress">
+                                                            ng-disabled="cart.sameAsBillingAddress">
                                                     <span class="error small text-danger"></span>
                                                 </div>
 
@@ -827,7 +827,7 @@
                     <div ng-show="vm.steps.shopPay.visible" class="checkout-content checkout-open">
                         <div id="shop-checkout-payment-method" class="col-md-12 row">
                             <div class="col-md-12">
-                                <button class="btn btn-important" ng-click="cart.stripeCheckout(cart.order)">Complete Order</button>
+                                <button class="btn btn-important" ng-click="cart.stripeCheckout(cart.cart.order)">Complete Order</button>
 
                             </div>
                         </div>

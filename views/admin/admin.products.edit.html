@@ -22,9 +22,9 @@
              flow-init="vm.flowConfig"
              flow-name="vm.flow"
              flow-file-added="vm.flow.files.length < 3">
-            <div class="col-sm-4" ng-repeat="image in ngDialogData.metafields[11].children track by $index">
+            <div class="col-sm-4" ng-repeat="image in ngDialogData.metafields[1].children track by $index">
                 <div class="thumbnail">
-                    <img ng-if="!vm.flow.files[$index]" ng-src="{{image.url}}">
+                    <img ng-if="!vm.flow.files[$index]" ng-src="{{image.url}}" onerror="this.src = ''">
                     <img ng-if="vm.flow.files[$index]" flow-img="vm.flow.files[$index]">
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     <button class="btn btn-primary btn-block btn-sm" ng-click="vm.upload()">Upload</button>
                 </div>
                 <hr>
-                <button class="btn btn-success btn-block" ng-class="{'disabled': vm.flow.files.length && vm.uploadProgress[0] !== 100 && vm.uploadProgress[1] !== 100 && vm.uploadProgress[2] !== 100}" ng-click="vm.updateWatch(ngDialogData)">Save</button>
+                <button class="btn btn-success btn-block" ng-class="{'disabled': vm.flow.files.length && vm.uploadProgress[0] !== 100 && vm.uploadProgress[1] !== 100 && vm.uploadProgress[2] !== 100}" ng-click="vm.updateProduct(ngDialogData)">Save</button>
             </div>
         </div>
     </div>

@@ -9,10 +9,10 @@
     </div>
 </div>
 
-<div class="row" id="feature">
+<div class="row" id="feature" ng-init="vm.init()">
     <h1>FEATURE ITEMS</h1>
     <p>The best picks by our designers</p>
-    <div class="col-md-3 feature-item" ng-repeat="product in cart.products">
+    <div class="col-md-3 feature-item" ng-repeat="product in vm.products | limitTo: 4">
         <a ui-sref="main.product({id: product.slug})">
             <img alt="{{product.title}}" ng-src="{{product.metadata.images.image_1.url}}">
 

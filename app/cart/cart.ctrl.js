@@ -14,9 +14,13 @@
         vm.removeFromCart = removeFromCart;
         vm.completeOrder = completeOrder;
         vm.stripeCheckout = stripeCheckout;
+        vm.setSameAsBillingAddress = setSameAsBillingAddress;
 
         vm.cart = {};
-        vm.cart.order = {};
+        vm.cart.order = {
+            billing: {},
+            shipping: {}
+        };
         vm.products = [];
         vm.totalPrice = 0;
         vm.orderForm = null;
@@ -71,22 +75,23 @@
         }
 
         function completeOrder(order) {
-            order.watches = vm.watches;
+            order.products = vm.products;
 
             function success(response) {
                 $cookies.remove('cart');
                 getCart();
-                $state.go('main.cart.thankYou');
+
+                Notification.success('Thank You!');
+                // $state.go('main.cart.thankYou');
             }
 
             function failed(response) {
                 Notification.error(response.data.message);
             }
 
-            if (vm.orderForm.$valid)
-                CartService
-                    .completeOrder(order)
-                    .then(success, failed);
+            CartService
+                .completeOrder(order)
+                .then(success, failed);
         }
 
         function removeFromCart(_id) {
@@ -156,7 +161,15 @@
 
         }
 
+        function setSameAsBillingAddress() {
+            if (!vm.sameAsBillingAddress) return;
 
+            if (!vm.cart.order.hasOwnProperty('shipping'))
+                vm.cart.order.shipping = {};
+
+            for (var key in vm.cart.order.billing)
+                vm.cart.order.shipping[key] = vm.cart.order.billing[key];
+        }
 
     }
 })();

@@ -2,35 +2,35 @@
     'use strict';
     
     angular
-        .module('admin.watches.add', [])
+        .module('admin.products.add', [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
     function config($stateProvider, $urlRouterProvider) {
  
         $stateProvider
-            .state('admin.watches.add', {
+            .state('admin.products.add', {
                 url: '/add',
                 onEnter: [
                 'ngDialog',
-                'WatchService',
+                'ProductService',
                 '$stateParams',
                 '$state',
                 '$log',
-                function (ngDialog, WatchService, $stateParams, $state, $log) {
-                    openDialog(WatchService.watch);
+                function (ngDialog, ProductService, $stateParams, $state, $log) {
+                    openDialog(ProductService.product);
                         
                     function openDialog(data) {
     
                         var options = {
-                            templateUrl: '../views/admin/admin.watches.edit.html',
+                            templateUrl: '../views/admin/admin.products.edit.html',
                             data: data,
-                            controller: 'AdminWatchesAdd as vm',
+                            controller: 'AdminProductsAdd as vm',
                             showClose: true
                         };
     
                         ngDialog.open(options).closePromise.finally(function () {
-                            $state.go('admin.watches');
+                            $state.go('admin.products');
                         });
                     }
                 }],

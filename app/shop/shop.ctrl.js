@@ -16,6 +16,8 @@
 
         vm.products = [];
 
+        vm.removeProduct = removeProduct;
+
         function getProducts() {
             function success(response) {
                 $log.info(response);
@@ -29,6 +31,22 @@
 
             ProductService
                 .getProducts($stateParams)
+                .then(success, failed);
+        }
+
+        function removeProduct(slug) {
+            function success(response) {
+                $log.info(response);
+
+                $state.go('admin.products', null, {reload: true});
+            }
+
+            function failed(response) {
+                $log.error(response);
+            }
+
+            ProductService
+                .removeProduct(slug)
                 .then(success, failed);
         }
 

@@ -70,10 +70,10 @@
             };
 
             that.completeOrder = function (order) {
-                var watches = [];
+                var products = [];
 
-                order.watches.forEach(function (item) {
-                    watches.push(item._id);
+                order.products.forEach(function (item) {
+                    products.push(item._id);
                 });
 
                 return $http.post(URL + BUCKET_SLUG + '/add-object/', {
@@ -123,10 +123,10 @@
                             value: order.email
                         },
                         {
-                            key: "watches",
+                            key: "products",
                             type: "objects",
-                            object_type: "watches",
-                            value: watches.join()
+                            object_type: "products",
+                            value: products.join()
                         }
                     ]
                 });

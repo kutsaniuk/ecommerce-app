@@ -35,8 +35,6 @@
         };
         
         vm.openStep = openStep;
-        vm.setSameAsBillingAddress = setSameAsBillingAddress;
-
 
         function openStep(step) {
             if (vm.shopAdressForm.$invalid) return;
@@ -46,13 +44,6 @@
 
             vm.steps[step].visible = true;
             vm.steps[step].success = true;
-        }
-
-        function setSameAsBillingAddress() {
-            if (!vm.sameAsBillingAddress) return;
-
-            for (var key in vm.billing)
-                vm.shipping[key] = vm.billing[key];
         }
 
     }

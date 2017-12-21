@@ -11,6 +11,7 @@
         $stateProvider
             .state('main.home', {
                 url: '',
+                controller: 'ShopCtrl as vm',
                 templateUrl: '../views/home/home.html'
             });
     }

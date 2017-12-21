@@ -165,7 +165,7 @@
     angular
         .module('admin', [
             'admin.products',
-            // 'admin.orders'
+            'admin.orders'
         ])
         .config(config);
 
@@ -319,9 +319,13 @@
         vm.removeFromCart = removeFromCart;
         vm.completeOrder = completeOrder;
         vm.stripeCheckout = stripeCheckout;
+        vm.setSameAsBillingAddress = setSameAsBillingAddress;
 
         vm.cart = {};
-        vm.cart.order = {};
+        vm.cart.order = {
+            billing: {},
+            shipping: {}
+        };
         vm.products = [];
         vm.totalPrice = 0;
         vm.orderForm = null;
@@ -376,22 +380,23 @@
         }
 
         function completeOrder(order) {
-            order.watches = vm.watches;
+            order.products = vm.products;
 
             function success(response) {
                 $cookies.remove('cart');
                 getCart();
-                $state.go('main.cart.thankYou');
+
+                Notification.success('Thank You!');
+                // $state.go('main.cart.thankYou');
             }
 
             function failed(response) {
                 Notification.error(response.data.message);
             }
 
-            if (vm.orderForm.$valid)
-                CartService
-                    .completeOrder(order)
-                    .then(success, failed);
+            CartService
+                .completeOrder(order)
+                .then(success, failed);
         }
 
         function removeFromCart(_id) {
@@ -461,7 +466,15 @@
 
         }
 
+        function setSameAsBillingAddress() {
+            if (!vm.sameAsBillingAddress) return;
 
+            if (!vm.cart.order.hasOwnProperty('shipping'))
+                vm.cart.order.shipping = {};
+
+            for (var key in vm.cart.order.billing)
+                vm.cart.order.shipping[key] = vm.cart.order.billing[key];
+        }
 
     }
 })();
@@ -556,10 +569,10 @@
             };
 
             that.completeOrder = function (order) {
-                var watches = [];
+                var products = [];
 
-                order.watches.forEach(function (item) {
-                    watches.push(item._id);
+                order.products.forEach(function (item) {
+                    products.push(item._id);
                 });
 
                 return $http.post(URL + BUCKET_SLUG + '/add-object/', {
@@ -609,10 +622,10 @@
                             value: order.email
                         },
                         {
-                            key: "watches",
+                            key: "products",
                             type: "objects",
-                            object_type: "watches",
-                            value: watches.join()
+                            object_type: "products",
+                            value: products.join()
                         }
                     ]
                 });
@@ -656,8 +669,6 @@
         };
         
         vm.openStep = openStep;
-        vm.setSameAsBillingAddress = setSameAsBillingAddress;
-
 
         function openStep(step) {
             if (vm.shopAdressForm.$invalid) return;
@@ -667,13 +678,6 @@
 
             vm.steps[step].visible = true;
             vm.steps[step].success = true;
-        }
-
-        function setSameAsBillingAddress() {
-            if (!vm.sameAsBillingAddress) return;
-
-            for (var key in vm.billing)
-                vm.shipping[key] = vm.billing[key];
         }
 
     }
@@ -719,6 +723,7 @@ angular.module("config", [])
         $stateProvider
             .state('main.home', {
                 url: '',
+                controller: 'ShopCtrl as vm',
                 templateUrl: '../views/home/home.html'
             });
     }
@@ -792,71 +797,11 @@ angular.module("config", [])
             
             $http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-            this.watch = {
+            this.product = {
                 title: null,
-                type_slug: 'watches',
+                type_slug: 'products',
                 content: null,
                 metafields: [
-                    {
-                        key: "category",
-                        title: "Category",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "brand",
-                        title: "Brand",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "case_size",
-                        title: "Case Size",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "case_thickness",
-                        title: "Case Thickness",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "strap_width",
-                        title: "Strap Width",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "movement",
-                        title: "Movement",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "glass",
-                        title: "Glass",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "water_resistance",
-                        title: "Water Resistance",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "color",
-                        title: "Color",
-                        type: "text",
-                        value: null
-                    },
-                    {
-                        key: "strap_material",
-                        title: "Strap Material",
-                        type: "text",
-                        value: null
-                    },
                     {
                         key: "price",
                         title: "Price",
@@ -907,8 +852,8 @@ angular.module("config", [])
                         }
                     });
             };
-            this.getWatchesParams = function () {
-                return $http.get(URL + BUCKET_SLUG + '/object-type/watches', {
+            this.getProductsParams = function () {
+                return $http.get(URL + BUCKET_SLUG + '/object-type/products', {
                     params: {
                         limit: 100,
                         read_key: READ_KEY
@@ -922,12 +867,12 @@ angular.module("config", [])
                     }
                 });
             };
-            this.updateWatch = function (event) {
-                event.write_key = WRITE_KEY;
+            this.updateProduct = function (product) {
+                product.write_key = WRITE_KEY;
 
-                return $http.put(URL + BUCKET_SLUG + '/edit-object', event);
+                return $http.put(URL + BUCKET_SLUG + '/edit-object', product);
             };
-            this.removeWatch = function (slug) {
+            this.removeProduct = function (slug) {
                 return $http.delete(URL + BUCKET_SLUG + '/' + slug, {
                     ignoreLoadingBar: true,
                     headers:{
@@ -938,10 +883,10 @@ angular.module("config", [])
                     }
                 });
             };
-            this.createWatch = function (watch) {
-                watch.write_key = WRITE_KEY;
+            this.createProduct = function (product) {
+                product.write_key = WRITE_KEY;
                 
-                return $http.post(URL + BUCKET_SLUG + '/add-object', watch);
+                return $http.post(URL + BUCKET_SLUG + '/add-object', product);
             };
             this.upload = function (file) {
                 var fd = new FormData();
@@ -992,6 +937,8 @@ angular.module("config", [])
 
         vm.products = [];
 
+        vm.removeProduct = removeProduct;
+
         function getProducts() {
             function success(response) {
                 $log.info(response);
@@ -1005,6 +952,22 @@ angular.module("config", [])
 
             ProductService
                 .getProducts($stateParams)
+                .then(success, failed);
+        }
+
+        function removeProduct(slug) {
+            function success(response) {
+                $log.info(response);
+
+                $state.go('admin.products', null, {reload: true});
+            }
+
+            function failed(response) {
+                $log.error(response);
+            }
+
+            ProductService
+                .removeProduct(slug)
                 .then(success, failed);
         }
 
@@ -1545,8 +1508,8 @@ angular.module("config", [])
     
     angular
         .module('admin.products', [
-            // 'admin.products.edit',
-            // 'admin.products.add'
+            'admin.products.edit',
+            'admin.products.add'
         ])
         .config(config);
 
@@ -1557,7 +1520,7 @@ angular.module("config", [])
             .state('admin.products', {
                 url: 'products?key&value',
                 templateUrl: '../views/admin/admin.products.html',
-                controller: 'ProductsCtrl as vm',
+                controller: 'ShopCtrl as vm',
                 data: {
                     is_granted: ['ROLE_ADMIN']
                 }
@@ -1681,12 +1644,12 @@ angular.module("config", [])
 
     angular
         .module('main')
-        .controller('AdminWatchesAdd', AdminWatchesAdd);
+        .controller('AdminProductsAdd', AdminProductsAdd);
 
-    function AdminWatchesAdd($state, WatchService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
+    function AdminProductsAdd($state, ProductService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
         var vm = this;
 
-        vm.updateWatch = updateWatch;
+        vm.updateProduct = updateProduct;
         vm.upload = upload;
 
         vm.uploadProgress = [0, 0, 0];
@@ -1699,7 +1662,7 @@ angular.module("config", [])
             singleFile: false
         };
 
-        function updateWatch(watch) {
+        function updateProduct(product) {
             function success(response) {
                 $log.info(response);
 
@@ -1711,7 +1674,7 @@ angular.module("config", [])
                     }
                 );
 
-                $state.go('admin.watches', null, {reload: true});
+                $state.go('admin.products', null, {reload: true});
                 ngDialog.close();
             }
 
@@ -1724,23 +1687,23 @@ angular.module("config", [])
                 vm.uploadProgress[0] === 100 &&
                 vm.uploadProgress[1] === 100 &&
                 vm.uploadProgress[2] === 100)
-                WatchService
-                    .createWatch(watch)
+                ProductService
+                    .createProduct(product)
                     .then(success, failed);
             else
-                WatchService
-                    .createWatch(watch)
+                ProductService
+                    .createProduct(product)
                     .then(success, failed);
         }
 
         function upload() {
             vm.flow.files.forEach(function (item, i) {
                 if (i < 3)
-                    WatchService
+                    ProductService
                         .upload(item.file)
                         .then(function(response){
 
-                            $scope.ngDialogData.metafields[11].children[i].value = response.media.name;
+                            $scope.ngDialogData.metafields[1].children[i].value = response.media.name;
 
                         }, function(){
                             console.log('failed :(');
@@ -1758,35 +1721,35 @@ angular.module("config", [])
     'use strict';
     
     angular
-        .module('admin.watches.add', [])
+        .module('admin.products.add', [])
         .config(config);
 
     config.$inject = ['$stateProvider', '$urlRouterProvider'];
     function config($stateProvider, $urlRouterProvider) {
  
         $stateProvider
-            .state('admin.watches.add', {
+            .state('admin.products.add', {
                 url: '/add',
                 onEnter: [
                 'ngDialog',
-                'WatchService',
+                'ProductService',
                 '$stateParams',
                 '$state',
                 '$log',
-                function (ngDialog, WatchService, $stateParams, $state, $log) {
-                    openDialog(WatchService.watch);
+                function (ngDialog, ProductService, $stateParams, $state, $log) {
+                    openDialog(ProductService.product);
                         
                     function openDialog(data) {
     
                         var options = {
-                            templateUrl: '../views/admin/admin.watches.edit.html',
+                            templateUrl: '../views/admin/admin.products.edit.html',
                             data: data,
-                            controller: 'AdminWatchesAdd as vm',
+                            controller: 'AdminProductsAdd as vm',
                             showClose: true
                         };
     
                         ngDialog.open(options).closePromise.finally(function () {
-                            $state.go('admin.watches');
+                            $state.go('admin.products');
                         });
                     }
                 }],
@@ -1805,10 +1768,10 @@ angular.module("config", [])
         .module('main')
         .controller('AdminProductsEdit', AdminProductsEdit);
 
-    function AdminProductsEdit($state, WatchService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
+    function AdminProductsEdit($state, ProductService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
         var vm = this;
 
-        vm.updateWatch = updateWatch;
+        vm.updateProduct = updateProduct;
         vm.cancelUpload = cancelUpload;
         vm.upload = upload;
 
@@ -1818,7 +1781,9 @@ angular.module("config", [])
         vm.uploadProgress = [0, 0, 0];
 
         vm.event = {};
-        vm.flow = {};
+        vm.flow = {
+            files: null
+        };
         vm.background = {};
 
         vm.flowConfig = {
@@ -1826,7 +1791,7 @@ angular.module("config", [])
             singleFile: false
         };
 
-        function updateWatch(watch) {
+        function updateProduct(product) {
             function success(response) {
                 $log.info(response);
 
@@ -1838,8 +1803,8 @@ angular.module("config", [])
                     }
                 );
 
-                $state.go('admin.watches', null, {reload: true});
                 ngDialog.close();
+                $state.go('admin.products', null, {reload: true});
             }
 
             function failed(response) {
@@ -1851,26 +1816,24 @@ angular.module("config", [])
                 vm.uploadProgress[0] === 100 &&
                 vm.uploadProgress[1] === 100 &&
                 vm.uploadProgress[2] === 100)
-                WatchService
-                    .updateWatch(watch)
+                ProductService
+                    .updateProduct(product)
                     .then(success, failed);
             else
-                WatchService
-                    .updateWatch(watch)
+                ProductService
+                    .updateProduct(product)
                     .then(success, failed);
         }
 
         function cancelUpload() {
             vm.flow.cancel();
-            vm.background = {
-                'background-image': 'url(' + (vm.event.metafields[0].value ? vm.event.metafields[0].url : DEFAULT_EVENT_IMAGE) + ')'
-            };
         }
 
         $scope.$watch('vm.flow.files[0].file.name', function () {
-            if (!vm.flow.files[0]) {
-                return ;
-            }
+            if (!vm.flow.files) return;
+
+            if (!vm.flow.files.length) return;
+
             var fileReader = new FileReader();
             fileReader.readAsDataURL(vm.flow.files[0].file);
             fileReader.onload = function (event) {
@@ -1885,11 +1848,11 @@ angular.module("config", [])
         function upload() {
             vm.flow.files.forEach(function (item, i) {
                 if (i < 3)
-                    WatchService
+                    ProductService
                         .upload(item.file)
                         .then(function(response){
 
-                            $scope.ngDialogData.metafields[11].children[i].value = response.media.name;
+                            $scope.ngDialogData.metafields[1].children[i].value = response.media.name;
 
                         }, function(){
                             console.log('failed :(');
@@ -1923,9 +1886,9 @@ angular.module("config", [])
                 '$state',
                 '$log',
                 function (ngDialog, ProductService, $stateParams, $state, $log) {
-                    getWatch($stateParams.slug);
+                    getProduct($stateParams.slug);
     
-                    function getWatch(slug) {
+                    function getProduct(slug) {
                         function success(response) {
                             openDialog(response.data.object);
                         }

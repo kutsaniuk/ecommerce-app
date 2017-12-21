@@ -4,7 +4,7 @@
     angular
         .module('admin', [
             'admin.products',
-            // 'admin.orders'
+            'admin.orders'
         ])
         .config(config);
 

@@ -18,9 +18,9 @@
                 '$state',
                 '$log',
                 function (ngDialog, ProductService, $stateParams, $state, $log) {
-                    getWatch($stateParams.slug);
+                    getProduct($stateParams.slug);
     
-                    function getWatch(slug) {
+                    function getProduct(slug) {
                         function success(response) {
                             openDialog(response.data.object);
                         }

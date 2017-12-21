@@ -3,12 +3,12 @@
 
     angular
         .module('main')
-        .controller('AdminWatchesAdd', AdminWatchesAdd);
+        .controller('AdminProductsAdd', AdminProductsAdd);
 
-    function AdminWatchesAdd($state, WatchService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
+    function AdminProductsAdd($state, ProductService, Notification, $log, $scope, MEDIA_URL, ngDialog) {
         var vm = this;
 
-        vm.updateWatch = updateWatch;
+        vm.updateProduct = updateProduct;
         vm.upload = upload;
 
         vm.uploadProgress = [0, 0, 0];
@@ -21,7 +21,7 @@
             singleFile: false
         };
 
-        function updateWatch(watch) {
+        function updateProduct(product) {
             function success(response) {
                 $log.info(response);
 
@@ -33,7 +33,7 @@
                     }
                 );
 
-                $state.go('admin.watches', null, {reload: true});
+                $state.go('admin.products', null, {reload: true});
                 ngDialog.close();
             }
 
@@ -46,23 +46,23 @@
                 vm.uploadProgress[0] === 100 &&
                 vm.uploadProgress[1] === 100 &&
                 vm.uploadProgress[2] === 100)
-                WatchService
-                    .createWatch(watch)
+                ProductService
+                    .createProduct(product)
                     .then(success, failed);
             else
-                WatchService
-                    .createWatch(watch)
+                ProductService
+                    .createProduct(product)
                     .then(success, failed);
         }
 
         function upload() {
             vm.flow.files.forEach(function (item, i) {
                 if (i < 3)
-                    WatchService
+                    ProductService
                         .upload(item.file)
                         .then(function(response){
 
-                            $scope.ngDialogData.metafields[11].children[i].value = response.media.name;
+                            $scope.ngDialogData.metafields[1].children[i].value = response.media.name;
 
                         }, function(){
                             console.log('failed :(');
