@@ -114,3 +114,8 @@ body {
         margin-right: 0;
     }
 }
+
+.sidebar-nav > .active a {
+    background: rgba(255,255,255,.1);
+    color: #eee;
+}

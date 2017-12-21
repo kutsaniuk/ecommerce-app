@@ -29,16 +29,16 @@
                 </div>
             </div>
             <div class="col-sm-12">
-                <button ng-show="!vm.flow.files.length" class="btn btn-primary btn-block btn-sm" flow-btn>Change images</button>
+                <button ng-show="!vm.flow.files.length" class="btn btn-important btn-block btn-sm" flow-btn>Change images</button>
                 <div ng-show="vm.flow.files.length" >
                     <uib-progressbar class="event-progress active" max="100" value="vm.uploadProgress[0]"></uib-progressbar>
                     <uib-progressbar class="event-progress active" max="100" value="vm.uploadProgress[1]"></uib-progressbar>
                     <uib-progressbar class="event-progress active" max="100" value="vm.uploadProgress[2]"></uib-progressbar>
                     <button class="btn btn-default btn-block btn-sm" ng-click="vm.flow.cancel()">Cancel</button>
-                    <button class="btn btn-primary btn-block btn-sm" ng-click="vm.upload()">Upload</button>
+                    <button class="btn btn-important btn-block btn-sm" ng-click="vm.upload()">Upload</button>
                 </div>
-                <hr>
-                <button class="btn btn-success btn-block" ng-class="{'disabled': vm.flow.files.length && vm.uploadProgress[0] !== 100 && vm.uploadProgress[1] !== 100 && vm.uploadProgress[2] !== 100}" ng-click="vm.updateProduct(ngDialogData)">Save</button>
+                <button class="btn btn-important btn-block" ng-class="{'disabled': vm.flow.files.length && vm.uploadProgress[0] !== 100 && vm.uploadProgress[1] !== 100 && vm.uploadProgress[2] !== 100}" ng-click="vm.updateProduct(ngDialogData)">Save</button>
+                <br>
             </div>
         </div>
     </div>

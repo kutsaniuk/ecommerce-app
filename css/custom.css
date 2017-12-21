@@ -118,6 +118,29 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#85d7de', endColorstr='#e0a979', GradientType=1);
 }
 
-input.ng-invalid, select.ng-invalid {
+input.ng-invalid.ng-dirty, select.ng-invalid.ng-dirty {
     border-color: #a94442;
+}
+
+.admin-table {
+    background: #fff;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-content {
+    background: #fff;
+    border-radius: 0;
+    max-width: 700px;
+    width: 100%;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-content .row{
+    padding: 0;
+}
+
+.copyright {
+    list-style-type: none;
+}
+
+.copyright li {
+    margin-bottom: 10px;
 }

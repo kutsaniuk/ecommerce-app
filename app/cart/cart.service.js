@@ -78,49 +78,59 @@
 
                 return $http.post(URL + BUCKET_SLUG + '/add-object/', {
                     write_key: WRITE_KEY,
-                    title: order.firstName + ' ' + order.lastName,
+                    title: order.shipping.firstName + ' ' + order.shipping.lastName,
                     type_slug: "orders",
                     metafields: [
                         {
                             key: "first_name",
                             type: "text",
-                            value: order.firstName
+                            value: order.shipping.firstName
 
                         },
                         {
                             key: "last_name",
                             type: "text",
-                            value: order.lastName
+                            value: order.shipping.lastName
 
                         },
                         {
                             key: "address",
                             type: "text",
-                            value: order.address
+                            value: order.shipping.address
 
                         },
                         {
                             key: "city",
                             type: "text",
-                            value: order.city
+                            value: order.shipping.city
 
                         },
                         {
                             key: "phone",
                             type: "text",
-                            value: order.phone
+                            value: order.shipping.phone
 
                         },
                         {
                             key: "postal_code",
                             type: "text", 
-                            value: order.postalCode
+                            value: order.shipping.postalCode
 
+                        },
+                        {
+                            key: "country",
+                            type: "text",
+                            value: order.shipping.country
+                        },
+                        {
+                            key: "state",
+                            type: "text",
+                            value: order.shipping.state
                         },
                         {
                             key: "email",
                             type: "text",
-                            value: order.email
+                            value: order.billing.email
                         },
                         {
                             key: "products",

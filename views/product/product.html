@@ -6,17 +6,20 @@
 
                     <div class="col-md-6">
                         <ul class="col-md-12 thumblist">
-                            <li ng-if="vm.product.metafields[1].children[1].value">
+                            <li ng-if="vm.product.metafields[1].children[0].value" ng-click="vm.setImage(1)">
+                                <img ng-src="{{vm.product.metadata.images.image_1.url}}" alt="{{vm.product.title}}">
+                            </li>
+                            <li ng-if="vm.product.metafields[1].children[1].value" ng-click="vm.setImage(2)">
                                 <img ng-src="{{vm.product.metadata.images.image_2.url}}" alt="{{vm.product.title}}">
                             </li>
-                            <li ng-if="vm.product.metafields[1].children[2].value">
+                            <li ng-if="vm.product.metafields[1].children[2].value" ng-click="vm.setImage(3)">
                                 <img ng-src="{{vm.product.metadata.images.image_3.url}}" alt="{{vm.product.title}}">
                             </li>
                         </ul>
 
 
                         <div class="col-md-12" id="main-img">
-                            <img id="big-thumb" ng-src="{{vm.product.metadata.images.image_1.url}}" alt="{{vm.product.title}}">
+                            <img id="big-thumb" ng-src="{{vm.currentImage.url}}" alt="{{vm.currentImage.title}}">
                         </div>
                     </div>
 

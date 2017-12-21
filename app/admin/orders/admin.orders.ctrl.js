@@ -44,11 +44,11 @@
                 .then(success, failed);
         }
         
-        function totalPrice(watches) {
+        function totalPrice(products) {
             var total = 0;
 
-            watches.forEach(function (item) {
-                total += item.metadata.price;
+            products.forEach(function (item) {
+                total += parseInt(item.metadata.price);
             });
 
             return total;

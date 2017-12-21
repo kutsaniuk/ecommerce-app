@@ -577,49 +577,59 @@
 
                 return $http.post(URL + BUCKET_SLUG + '/add-object/', {
                     write_key: WRITE_KEY,
-                    title: order.firstName + ' ' + order.lastName,
+                    title: order.shipping.firstName + ' ' + order.shipping.lastName,
                     type_slug: "orders",
                     metafields: [
                         {
                             key: "first_name",
                             type: "text",
-                            value: order.firstName
+                            value: order.shipping.firstName
 
                         },
                         {
                             key: "last_name",
                             type: "text",
-                            value: order.lastName
+                            value: order.shipping.lastName
 
                         },
                         {
                             key: "address",
                             type: "text",
-                            value: order.address
+                            value: order.shipping.address
 
                         },
                         {
                             key: "city",
                             type: "text",
-                            value: order.city
+                            value: order.shipping.city
 
                         },
                         {
                             key: "phone",
                             type: "text",
-                            value: order.phone
+                            value: order.shipping.phone
 
                         },
                         {
                             key: "postal_code",
                             type: "text", 
-                            value: order.postalCode
+                            value: order.shipping.postalCode
 
+                        },
+                        {
+                            key: "country",
+                            type: "text",
+                            value: order.shipping.country
+                        },
+                        {
+                            key: "state",
+                            type: "text",
+                            value: order.shipping.state
                         },
                         {
                             key: "email",
                             type: "text",
-                            value: order.email
+                            value: order.billing.email
                         },
                         {
                             key: "products",
@@ -738,18 +748,24 @@ angular.module("config", [])
 
     function ProductCtrl($stateParams, ProductService, Notification, $log, MEDIA_URL, $state) {
         var vm = this;
+        
+        vm.setImage = setImage;
 
         vm.init = function () {
             getProductBySlug();
         };
 
         vm.product = {};
+        
+        vm.currentImage = null;
 
         function getProductBySlug() {
             function success(response) {
                 $log.info(response);
 
                 vm.product = response.data.object;
+
+                setImage(1);
             }
 
             function failed(response) {
@@ -759,6 +775,10 @@ angular.module("config", [])
             ProductService
                 .getProductBySlug($stateParams.id)
                 .then(success, failed);
+        }
+
+        function setImage(index) {
+            vm.currentImage = vm.product.metadata.images['image_' + index];
         }
 
     }
@@ -1369,11 +1389,11 @@ angular.module("config", [])
                 .then(success, failed);
         }
         
-        function totalPrice(watches) {
+        function totalPrice(products) {
             var total = 0;
 
-            watches.forEach(function (item) {
-                total += item.metadata.price;
+            products.forEach(function (item) {
+                total += parseInt(item.metadata.price);
             });
 
             return total;
