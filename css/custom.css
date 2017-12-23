@@ -100,7 +100,7 @@
 }
 
 #intro-image {
-    background: url(/resources/tanto/img/bg.jpg?1460327300) no-repeat top center;
+    background: url(/dist/img/bg.jpg) no-repeat top center;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
