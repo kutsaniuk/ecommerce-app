@@ -10,7 +10,7 @@
             </tr>
             <tr ng-repeat="product in vm.products">
                 <td>{{$index + 1}}</td>
-                <td><img ng-show="product.metadata.images.image_1" ng-src="{{product.metadata.images.image_1.url}}" width="50"></td>
+                <td><img ng-show="product.metadata.images.image_1" ng-src="{{product.metadata.images.image_1.url}}" width="50" data-action="zoom"></td>
                 <td><a ui-sref="main.product({id: product.slug})" target="_blank">{{product.title}}</a></td>
                 <td><i class="fa fa-dollar"></i> {{product.metadata.price}}</td>
                 <td>

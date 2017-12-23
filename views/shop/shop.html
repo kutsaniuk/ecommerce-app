@@ -15,7 +15,7 @@
 
             <div class="col-md-4 shop-item" ng-repeat="product in vm.products">
                 <a ui-sref="main.product({id: product.slug})">
-                    <img ng-src="{{product.metadata.images.image_1.url}}" alt="Dark Coffee Table">
+                    <img ng-src="{{product.metadata.images.image_1.url}}" alt="{{product.title}}">
                     <div>
                         <h5>{{product.title}}</h5>
 
