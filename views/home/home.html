@@ -40,23 +40,26 @@
     </div>
 
 
-    <form action="">
+    <form name="vm.messageForm" ng-submit="vm.submitMessage()">
 
         <div class="form col-md-6">
             <div class="field-row" id="contact-form">
                 <input class="required md-input form-control" placeholder="Email Address*" value=""
-                       name="fields[email]" id="fields_email">
+                       ng-model="vm.message.email"
+                       name="email" id="fields_email" required>
                 <span class="error"></span>
 
-                <input class="required md-input form-control" placeholder="Name*" value="" name="fields[name]"
-                       id="fields_name">
+                <input class="required md-input form-control" placeholder="Name*" value="" name="name"
+                       ng-model="vm.message.name"
+                       id="fields_name" required>
                 <span class="error"></span>
 
-                    <textarea rows="10" class="required md-input form-control" placeholder="Message*" value=""
-                              name="fields[message]" id="fields_message"></textarea>
+                    <textarea rows="10" class="required md-input form-control" placeholder="Message*"
+                              ng-model="vm.message.text"
+                              name="message" id="fields_message" required></textarea>
                 <span class="error"></span>
 
-                <a type="buttom" href="mailto:kutsaniuk@gmail.com" class="btn-default btn pull-left">Send Message</a>
+                <button type="submit" class="btn-default btn pull-left">Send Message</button>
             </div>
 
         </div>

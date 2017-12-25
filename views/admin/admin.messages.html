@@ -1,0 +1,20 @@
+<div class="row" ng-init="vm.getMessages()">
+    <div class="col-lg-12">
+        <table class="table admin-table">
+            <tr>
+                <th>#</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Action</th>
+            </tr>
+            <tr ng-repeat="message in vm.messages">
+                <td>{{$index + 1}}</td>
+                <td><a ui-sref="admin.messages.preview({slug: message.slug})">{{message.metadata.email}}</a></td>
+                <td>{{message.metadata.name}}</td>
+                <td>
+                    <button class="btn btn-default btn-sm" ng-click="vm.removeMessage(message.slug)"><i class="fa fa-remove"></i></button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

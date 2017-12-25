@@ -15,8 +15,10 @@
         vm.params = $stateParams;
 
         vm.products = [];
+        vm.message = {};
 
         vm.removeProduct = removeProduct;
+        vm.submitMessage = submitMessage;
 
         function getProducts() {
             function success(response) {
@@ -47,6 +49,22 @@
 
             ProductService
                 .removeProduct(slug)
+                .then(success, failed);
+        }
+        
+        function submitMessage() {
+            function success(response) {
+                $log.info(response);
+
+                Notification.success('Message Sent!');
+            }
+
+            function failed(response) {
+                $log.error(response);
+            } 
+
+            ProductService
+                .sendMessage(vm.message)
                 .then(success, failed);
         }
 

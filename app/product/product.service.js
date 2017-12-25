@@ -102,6 +102,28 @@
                 
                 return $http.post(URL + BUCKET_SLUG + '/add-object', product);
             };
+            this.sendMessage = function (message) {
+                return $http.post(URL + BUCKET_SLUG + '/add-object', {
+                    title: message.email,
+                    type_slug: 'messages',
+                    content: message.text,
+                    write_key: WRITE_KEY,
+                    metafields: [
+                        {
+                            key: "email",
+                            title: "Email",
+                            type: "text",
+                            value: message.email
+                        },
+                        {
+                            key: "name",
+                            title: "Name",
+                            type: "text",
+                            value: message.name
+                        }
+                    ]
+                });
+            };
             this.upload = function (file) {
                 var fd = new FormData();
 
