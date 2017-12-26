@@ -103,6 +103,8 @@
                 return $http.post(URL + BUCKET_SLUG + '/add-object', product);
             };
             this.sendMessage = function (message) {
+                $http.post('/contact', message);
+                
                 return $http.post(URL + BUCKET_SLUG + '/add-object', {
                     title: message.email,
                     type_slug: 'messages',
