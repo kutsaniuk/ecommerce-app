@@ -23,7 +23,7 @@
     "gulp-webserver": "^0.9.1",
     "http-server": "^0.9.0",
     "mailgun": "^0.5.0",
-    "mailgun-js": "",
+    "mailgun-js": "*",
     "stripe": "^4.22.0",
     "wiredep": "^3.0.0"
   },
